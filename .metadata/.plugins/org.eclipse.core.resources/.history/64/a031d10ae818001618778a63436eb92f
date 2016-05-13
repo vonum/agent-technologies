@@ -1,0 +1,9 @@
+
+
+ <!-- Header -->
+    <div id="top" class="">
+        <div class="text-vertical-center">
+            <h1>Chat App</h1>
+            <h3>Welcome to chatApp login/register to chat</h3>
+        </div>
+    </div>

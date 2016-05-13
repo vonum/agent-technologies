@@ -1,0 +1,53 @@
+<div>
+<h1>Chat Window</h1>
+
+  <div class="row">
+  
+  			<div class="col-md-2 col-md-offset-1">
+  				  <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        Users
+                    </div>
+                    <div class="panel-body">
+                    	<ul>
+                    	<li>You: {{ currUser }}</li>
+                    		<li ng-repeat="u in userList">
+                    			{{u}}
+                    		</li>
+                    	</ul>
+                    </div>
+  			</div>
+  			</div>
+            <div class="col-md-6">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        Start chatting in this awesome chat right now!
+                        <button class="btn btn-danger pull-right" ng-click="logout()">Logout</button>
+                    </div>
+                        <ul id="chat_list">
+                           
+                        </ul>
+                     <div class="panel-body">
+                      	<ul>
+                      		<li ng-repeat="msg in msgList">
+                      			{{"(" + msg.from + "):  " + msg.content}}
+                      		</li>
+                      	</ul>
+                     </div>
+                    
+                     <div class="panel-footer">
+                         <div class="row">
+                             <div class="col-md-10">
+                                <input type="text" ng-keyup="$event.keyCode == 13 && sendMsg()" class="form-control" ng-model="msgText" placeholder="Type username: to send private msg to users">
+                             </div>
+                          	   <div class="col-md-2">
+                               	<button type="button" class="btn btn-success" ng-click="sendMsg()">Submit</button>
+                             </div>
+                             
+                            </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+</div>
