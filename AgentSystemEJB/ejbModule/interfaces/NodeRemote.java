@@ -1,12 +1,12 @@
 package interfaces;
 
-import java.util.Map;
+import java.util.List;
 
 import model.AgentCenter;
 
 public interface NodeRemote {
 
-	public Map<String, AgentCenter> registerAgentCenter(AgentCenter center);
+	public Object registerAgentCenter(AgentCenter center);
 	
 	//public String registerExistingAgentCenters(List<AgentCenter> centers);
 	

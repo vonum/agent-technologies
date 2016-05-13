@@ -47,7 +47,7 @@ public class NodeBean implements NodeRemote{
     	master = new AgentCenter("192.168.0.14", "master");
     	curNode = master;
     	centers = new HashMap<String, AgentCenter>();
-    	centers.put(master.getAlias(), master);
+    	//centers.put(master.getAlias(), master);
     }
 
     @POST
@@ -55,14 +55,34 @@ public class NodeBean implements NodeRemote{
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
 	@Override
-	public Map<String, AgentCenter> registerAgentCenter(AgentCenter center) {
+	public List<AgentCenter> registerAgentCenter(AgentCenter center) {
 		// TODO Auto-generated method stub
 
+    	System.out.println("Handling request");
     	if(curNode.getAlias().equals("master"))
     	{
+    		System.out.println("Adding center");
+    		if(!centers.containsKey(center.getAlias()))
+    		{
+    			//javi ostalim cvorovima da dodaju taj cvor
+    			for(AgentCenter cnt : centers.values())
+    			{
+    		        ResteasyClient client = new ResteasyClientBuilder().build();
+    		        ResteasyWebTarget target = client.target("http://" + cnt.getAddress() + ":8080/AgentSystemClient/rest/node/register");
+    			}
+    			
+    			centers.put(center.getAlias(), center);	
+    			
+    			return new ArrayList(centers.values());
+    		}
+    		else
+    		{
+    			return null;
+    		}
+    	}
+    	else	//ako nije master, znaci da samo treba da doda nov centar u mapu
+    	{
     		centers.put(center.getAlias(), center);
-    		
-    		return centers;
     	}
     	
     	return null;
