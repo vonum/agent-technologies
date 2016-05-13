@@ -128,7 +128,7 @@ public class NodeBean implements NodeRemote{
 	@POST
 	@Path("/unregister")
 	@Override
-	public void unregisterAgentCenter(String alias) {
+	public String unregisterAgentCenter(String alias) {
 		// TODO Auto-generated method stub
 		if(curNode.getAlias().equals("master"))
 		{
@@ -139,7 +139,6 @@ public class NodeBean implements NodeRemote{
 			{
 		        ResteasyClient client = new ResteasyClientBuilder().build();
 		        ResteasyWebTarget target = client.target("http://" + center.getAddress() + ":8080/AgentSystemClient/rest/node/unregister");
-		        
 			}
 		}
 		else
@@ -147,6 +146,8 @@ public class NodeBean implements NodeRemote{
 			//izbaci cvor
 			centers.remove(alias);
 		}
+		
+		return "success";
 
 	}
 
@@ -162,8 +163,6 @@ public class NodeBean implements NodeRemote{
 		
 		return response.readEntity(String.class);
 	}
-	
-
 	
 	@GET
 	@Path("/nodes")
