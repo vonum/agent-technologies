@@ -58,12 +58,13 @@ public class NodeBean implements NodeRemote{
 	public List<AgentCenter> registerAgentCenter(AgentCenter center) {
 		// TODO Auto-generated method stub
 
-    	System.out.println("Handling request");
+    	System.out.println("Handling register request");
     	if(curNode.getAlias().equals("master"))
     	{
-    		System.out.println("Adding center");
     		if(!centers.containsKey(center.getAlias()))
     		{
+        		System.out.println("Adding center");
+        		System.out.println("Sending http to other nodes");
     			//javi ostalim cvorovima da dodaju taj cvor
     			for(AgentCenter cnt : centers.values())
     			{
@@ -82,6 +83,7 @@ public class NodeBean implements NodeRemote{
     	}
     	else	//ako nije master, znaci da samo treba da doda nov centar u mapu
     	{
+    		System.out.println("Adding center, nomaster");
     		centers.put(center.getAlias(), center);
     	}
     	
@@ -96,7 +98,7 @@ public class NodeBean implements NodeRemote{
 		// TODO Auto-generated method stub
         if(!curNode.getAlias().equals("master"))
         {
-        	System.out.println("Sending message");
+        	System.out.println("Sending register message");
 	        ResteasyClient client = new ResteasyClientBuilder().build();
 	        ResteasyWebTarget target = client.target("http://" + master.getAddress() + ":8080/AgentSystemClient/rest/node/register");
 	        Response response = target.request(MediaType.APPLICATION_JSON).post(Entity.entity(curNode, MediaType.APPLICATION_JSON));
@@ -104,7 +106,7 @@ public class NodeBean implements NodeRemote{
 
 	        if(ret != null)
 	        {
-	        	System.out.println("Message recieved");
+	        	System.out.println("Register response recieved");
 	            for(Object temp : ret)
 	            {
 	                if(temp instanceof LinkedHashMap)
@@ -122,6 +124,45 @@ public class NodeBean implements NodeRemote{
         	return "master pls";
         }
 	}
+
+	@POST
+	@Path("/unregister")
+	@Override
+	public void unregisterAgentCenter(String alias) {
+		// TODO Auto-generated method stub
+		if(curNode.getAlias().equals("master"))
+		{
+			//izbaci cvor
+			centers.remove(alias);
+			//javi ostalima da izbace cvor
+			for(AgentCenter center : centers.values())
+			{
+		        ResteasyClient client = new ResteasyClientBuilder().build();
+		        ResteasyWebTarget target = client.target("http://" + center.getAddress() + ":8080/AgentSystemClient/rest/node/unregister");
+		        
+			}
+		}
+		else
+		{
+			//izbaci cvor
+			centers.remove(alias);
+		}
+
+	}
+
+	@GET
+	@Path("/bye")
+	@Override
+	public String byeMaster() {
+		// TODO Auto-generated method stub
+    	System.out.println("Sending unregister message");
+        ResteasyClient client = new ResteasyClientBuilder().build();
+        ResteasyWebTarget target = client.target("http://" + master.getAddress() + ":8080/AgentSystemClient/rest/node/unregister");
+        Response response = target.request().post(Entity.entity(curNode.getAlias(), MediaType.TEXT_PLAIN));
+		
+		return response.readEntity(String.class);
+	}
+	
 
 	
 	@GET

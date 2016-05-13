@@ -10,6 +10,10 @@ public interface NodeRemote {
 	
 	//public String registerExistingAgentCenters(List<AgentCenter> centers);
 	
+	public void unregisterAgentCenter(String alias);
+	
 	public String hiMaster();
+	
+	public String byeMaster();
 	
 }
