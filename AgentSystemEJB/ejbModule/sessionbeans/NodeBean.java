@@ -28,6 +28,11 @@ import model.AgentCenter;
 
 /**
  * Session Bean implementation class NodeBean
+ * 
+ * Ovo ce biti onda klasa gde upravljamo razlicitim nodovima u serveru,
+ * pored registracije, morace da dele listu aktivnih agenta/tipova agenta...
+ * i podrzava rollback ako dodje do gresaka
+ * 
  */
 @Singleton
 @LocalBean
