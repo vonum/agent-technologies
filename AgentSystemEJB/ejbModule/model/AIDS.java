@@ -2,7 +2,7 @@ package model;
 
 /**
  * 
- * Agents id secure
+ * Agent id SERBIA
  * 
  * Each agent has AIDS
  */

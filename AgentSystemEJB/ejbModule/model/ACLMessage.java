@@ -8,6 +8,6 @@ package model;
  */
 
 
-public class ACL {
+public class ACLMessage {
 
 }
