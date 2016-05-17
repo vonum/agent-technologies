@@ -6,16 +6,17 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.Charset;
-import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import model.AgentType;
 
 public final class Utility {
 
-	public static Map<String, AgentType> readAgentTypesFromFile(String file)
+	public static List<AgentType> readAgentTypesFromFile(String file)
 	{
-		Map<String, AgentType> types = new HashMap<String, AgentType>();
+		List<AgentType> types = new ArrayList<AgentType>();
 		String line;
 		
 		try (
@@ -29,7 +30,7 @@ public final class Utility {
 		    	String[] parts = line.split(":");
 		    	AgentType type = new AgentType(parts[0], parts[1]);
 		    	
-		    	types.put(parts[0], type);
+		    	types.add(type);
 		    }
 		    
 		    return types;

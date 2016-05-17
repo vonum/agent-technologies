@@ -1,18 +1,19 @@
 package interfaces;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import model.AIDS;
-import model.SirAgent;
 import model.AgentType;
+import model.SirAgent;
 
 public interface AgentManagerRemote 
 {
 	//dobavimo sve tipove agenta na sistemu
-	public ArrayList<AgentType> agentTypes();
+	public List<AgentType> agentTypes();
 	
 	//listu svih trenutno pokrenutih agenta
-	public ArrayList<SirAgent> runningAgents();
+	public List<SirAgent> runningAgents();
 	
 	//pokrenemo agent, zadamo mu kojeg je tipa i njegovo ime
 	public String startAgent(AgentType type, String name);

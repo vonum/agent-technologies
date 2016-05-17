@@ -1,12 +1,17 @@
 package sessionbeans;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
+import javax.annotation.PostConstruct;
 import javax.ejb.Lock;
 import javax.ejb.LockType;
 import javax.ejb.Remote;
 import javax.ejb.Singleton;
 import javax.websocket.server.PathParam;
+import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -20,6 +25,7 @@ import interfaces.AgentManagerRemote;
 import model.AIDS;
 import model.AgentType;
 import model.SirAgent;
+import util.Utility;
 
 @Singleton
 @Remote
@@ -27,14 +33,37 @@ import model.SirAgent;
 @Path("/agents")
 public class AgentManagerBean implements AgentManagerRemote
 {
+	private List<AgentType> types;
+	
+	public AgentManagerBean()
+	{
+		types = new ArrayList<AgentType>();
+	}
+	
+	@PostConstruct
+	public void init()
+	{
+		types = Utility.readAgentTypesFromFile("AgentSystemResources/types.txt");
+	}
+	
     @GET
     @Path("/classes")
     @Produces(MediaType.APPLICATION_JSON)
 	@Override
-	public ArrayList<AgentType> agentTypes() 
+	public List<AgentType> agentTypes() 
 	{
-		return null;
+		return types;
 	}
+    
+    @POST
+    @Path("/classes")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public String addTypes(List<AgentType> types)
+    {
+    	this.types = types;
+    	
+    	return "added";
+    }
 
     @GET
     @Path("/running")

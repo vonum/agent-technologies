@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.annotation.PostConstruct;
+import javax.ejb.EJB;
 import javax.ejb.LocalBean;
 import javax.ejb.Lock;
 import javax.ejb.LockType;
@@ -24,6 +25,7 @@ import org.jboss.resteasy.client.jaxrs.ResteasyClient;
 import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
 import org.jboss.resteasy.client.jaxrs.ResteasyWebTarget;
 
+import interfaces.AgentManagerRemote;
 import interfaces.NodeRemote;
 import model.AgentCenter;
 import model.AgentType;
@@ -47,7 +49,10 @@ public class NodeBean implements NodeRemote{
 	private AgentCenter curNode;
 	
 	private Map<String, AgentCenter> centers;
-	private Map<String, AgentType> types;
+	private List<AgentType> types;
+	
+	@EJB
+	AgentManagerRemote agentManager;
     /**
      * Default constructor. 
      */
@@ -65,7 +70,7 @@ public class NodeBean implements NodeRemote{
     	System.out.println("NAPRAVLJENI SMO FAK JEA");
     	System.out.println("Working Directory = " +
                 System.getProperty("user.dir"));
-    	types = Utility.readAgentTypesFromFile("AgentSystemResources/types.txt");
+    	types = agentManager.agentTypes();
     	System.out.println(types.size());
     }
 
@@ -84,7 +89,14 @@ public class NodeBean implements NodeRemote{
     		{
         		System.out.println("Adding center");
         		System.out.println("Sending http to other nodes");
-    			//javi ostalim cvorovima da dodaju taj cvor
+        		
+        		//2. master trazi koje tipove agenata podrzava novi cvor
+		        ResteasyClient client1 = new ResteasyClientBuilder().build();
+		        ResteasyWebTarget target1 = client1.target("http://" + center.getAddress() + ":8080/AgentSystemClient/rest/agents/classes");
+		        Response rsp = target1.request(MediaType.APPLICATION_JSON).get();
+		        List<AgentType> tmp = rsp.readEntity(ArrayList.class);
+        		
+    			//3. master javlja ostalim cvorovima da dodaju taj cvor
     			for(AgentCenter cnt : centers.values())
     			{
     		        ResteasyClient client = new ResteasyClientBuilder().build();
