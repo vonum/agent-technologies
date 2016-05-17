@@ -95,14 +95,14 @@ public class NodeBean implements NodeRemote{
 		        ResteasyWebTarget target1 = client1.target("http://" + center.getAddress() + ":8080/AgentSystemClient/rest/agents/classes");
 		        Response rsp = target1.request(MediaType.APPLICATION_JSON).get();
 		        Map<String, AgentType> tmp = rsp.readEntity(HashMap.class);
-		        for(String key : tmp.keySet())
+		        /*for(String key : tmp.keySet())
 		        {
 		        	if(!types.containsKey(key))
 		        	{
 		        		types.put(key, tmp.get(key));
 		        	}
-		        }
-        		
+		        }*/
+
     			//3. master javlja ostalim cvorovima da dodaju taj cvor
     			for(AgentCenter cnt : centers.values())
     			{

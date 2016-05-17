@@ -13,6 +13,8 @@ public interface AgentManagerRemote
 	//dobavimo sve tipove agenta na sistemu
 	public Map<String, AgentType> agentTypes();
 	
+	public String addTypes(Map<String, AgentType> types);
+	
 	//listu svih trenutno pokrenutih agenta
 	public List<SirAgent> runningAgents();
 	

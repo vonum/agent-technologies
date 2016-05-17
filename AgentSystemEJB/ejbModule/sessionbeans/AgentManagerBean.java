@@ -57,8 +57,11 @@ public class AgentManagerBean implements AgentManagerRemote
     @POST
     @Path("/classes")
     @Consumes(MediaType.APPLICATION_JSON)
+    @Override
     public String addTypes(Map<String, AgentType> types)
     {
+    	System.out.println("we are here");
+    	System.out.println(types.getClass());
     	this.types = types;
     	
     	return "added";
