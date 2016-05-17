@@ -95,17 +95,40 @@ public class NodeBean implements NodeRemote{
 		        ResteasyWebTarget target1 = client1.target("http://" + center.getAddress() + ":8080/AgentSystemClient/rest/agents/classes");
 		        Response rsp = target1.request(MediaType.APPLICATION_JSON).get();
 		        Map<String, AgentType> tmp = rsp.readEntity(HashMap.class);
-		        System.out.println(tmp.size());
+		        for(String key : tmp.keySet())
+		        {
+		        	if(!types.containsKey(key))
+		        	{
+		        		types.put(key, tmp.get(key));
+		        	}
+		        }
         		
     			//3. master javlja ostalim cvorovima da dodaju taj cvor
     			for(AgentCenter cnt : centers.values())
     			{
     		        ResteasyClient client = new ResteasyClientBuilder().build();
     		        ResteasyWebTarget target = client.target("http://" + cnt.getAddress() + ":8080/AgentSystemClient/rest/node/register");
+    		        Response response = target.request().post(Entity.entity(center, MediaType.APPLICATION_JSON));
     			}
+    			
+    			//4. master dostavlja svima listu tipova agenata koje svi zajedno podrzavaju
+		        for(AgentCenter cnt : centers.values())
+		        {
+    		        ResteasyClient client = new ResteasyClientBuilder().build();
+    		        ResteasyWebTarget target = client.target("http://" + cnt.getAddress() + ":8080/AgentSystemClient/rest/agents/classes");
+    		        Response response = target.request().post(Entity.entity(types, MediaType.APPLICATION_JSON));
+    		        System.out.println(response.readEntity(String.class));
+		        }
+		        
+		        //5. master novom cvoru dostavlja listu svih podrzanih tipova agenata
+		        ResteasyClient client = new ResteasyClientBuilder().build();
+		        ResteasyWebTarget target = client.target("http://" + center.getAddress() + ":8080/AgentSystemClient/rest/agents/classes");
+		        Response response = target.request().post(Entity.entity(types, MediaType.APPLICATION_JSON));
+		        System.out.println(response.readEntity(String.class));
     			
     			centers.put(center.getAlias(), center);	
     			
+    			//6. na kraju vrati listu cvorova novom cvoru 
     			return new ArrayList(centers.values());
     		}
     		else
