@@ -8,13 +8,13 @@ package model;
 
 public class AgentType {
 	private String name;
-	private String type;
+	private String module;
 	
 	public AgentType(){}
 	
-	public AgentType(String name, String type) {
+	public AgentType(String name, String module) {
 		this.name = name;
-		this.type = type;
+		this.module = module;
 	}
 	public String getName() {
 		return name;
@@ -23,10 +23,10 @@ public class AgentType {
 		this.name = name;
 	}
 	public String getType() {
-		return type;
+		return module;
 	}
-	public void setType(String type) {
-		this.type = type;
+	public void setType(String module) {
+		this.module = module;
 	}
 	
 	

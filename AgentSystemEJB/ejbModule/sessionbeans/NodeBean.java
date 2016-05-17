@@ -6,6 +6,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.PostConstruct;
 import javax.ejb.LocalBean;
 import javax.ejb.Lock;
 import javax.ejb.LockType;
@@ -25,6 +26,8 @@ import org.jboss.resteasy.client.jaxrs.ResteasyWebTarget;
 
 import interfaces.NodeRemote;
 import model.AgentCenter;
+import model.AgentType;
+import util.Utility;
 
 /**
  * Session Bean implementation class NodeBean
@@ -44,6 +47,7 @@ public class NodeBean implements NodeRemote{
 	private AgentCenter curNode;
 	
 	private Map<String, AgentCenter> centers;
+	private Map<String, AgentType> types;
     /**
      * Default constructor. 
      */
@@ -53,6 +57,16 @@ public class NodeBean implements NodeRemote{
     	curNode = master;
     	centers = new HashMap<String, AgentCenter>();
     	//centers.put(master.getAlias(), master);
+    }
+    
+    @PostConstruct
+    public void init()
+    {
+    	System.out.println("NAPRAVLJENI SMO FAK JEA");
+    	System.out.println("Working Directory = " +
+                System.getProperty("user.dir"));
+    	types = Utility.readAgentTypesFromFile("AgentSystemResources/types.txt");
+    	System.out.println(types.size());
     }
 
     @POST
