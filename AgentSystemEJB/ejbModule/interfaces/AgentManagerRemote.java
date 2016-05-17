@@ -2,6 +2,7 @@ package interfaces;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import model.AIDS;
 import model.AgentType;
@@ -10,7 +11,7 @@ import model.SirAgent;
 public interface AgentManagerRemote 
 {
 	//dobavimo sve tipove agenta na sistemu
-	public List<AgentType> agentTypes();
+	public Map<String, AgentType> agentTypes();
 	
 	//listu svih trenutno pokrenutih agenta
 	public List<SirAgent> runningAgents();

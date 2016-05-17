@@ -49,7 +49,7 @@ public class NodeBean implements NodeRemote{
 	private AgentCenter curNode;
 	
 	private Map<String, AgentCenter> centers;
-	private List<AgentType> types;
+	private Map<String, AgentType> types;
 	
 	@EJB
 	AgentManagerRemote agentManager;
@@ -94,7 +94,8 @@ public class NodeBean implements NodeRemote{
 		        ResteasyClient client1 = new ResteasyClientBuilder().build();
 		        ResteasyWebTarget target1 = client1.target("http://" + center.getAddress() + ":8080/AgentSystemClient/rest/agents/classes");
 		        Response rsp = target1.request(MediaType.APPLICATION_JSON).get();
-		        List<AgentType> tmp = rsp.readEntity(ArrayList.class);
+		        Map<String, AgentType> tmp = rsp.readEntity(HashMap.class);
+		        System.out.println(tmp.size());
         		
     			//3. master javlja ostalim cvorovima da dodaju taj cvor
     			for(AgentCenter cnt : centers.values())

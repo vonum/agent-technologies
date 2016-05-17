@@ -2,7 +2,6 @@ package sessionbeans;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import javax.annotation.PostConstruct;
@@ -33,11 +32,11 @@ import util.Utility;
 @Path("/agents")
 public class AgentManagerBean implements AgentManagerRemote
 {
-	private List<AgentType> types;
+	private Map<String, AgentType> types;
 	
 	public AgentManagerBean()
 	{
-		types = new ArrayList<AgentType>();
+		types = new HashMap<String, AgentType>();
 	}
 	
 	@PostConstruct
@@ -50,7 +49,7 @@ public class AgentManagerBean implements AgentManagerRemote
     @Path("/classes")
     @Produces(MediaType.APPLICATION_JSON)
 	@Override
-	public List<AgentType> agentTypes() 
+	public Map<String, AgentType> agentTypes() 
 	{
 		return types;
 	}
@@ -58,7 +57,7 @@ public class AgentManagerBean implements AgentManagerRemote
     @POST
     @Path("/classes")
     @Consumes(MediaType.APPLICATION_JSON)
-    public String addTypes(List<AgentType> types)
+    public String addTypes(Map<String, AgentType> types)
     {
     	this.types = types;
     	

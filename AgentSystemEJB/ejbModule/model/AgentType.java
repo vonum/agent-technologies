@@ -1,12 +1,15 @@
 package model;
 
+import java.io.Serializable;
+
 /**
  * 
  * Tipovi agenta
  *
  */
 
-public class AgentType {
+public class AgentType implements Serializable {
+	
 	private String name;
 	private String module;
 	
