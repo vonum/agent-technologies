@@ -53,8 +53,8 @@ public class AgentManagerBean implements AgentManagerRemote
 	{
 		return types;
 	}
-    
-    @POST
+
+	@POST
     @Path("/classes")
     @Consumes(MediaType.APPLICATION_JSON)
     @Override
@@ -112,6 +112,14 @@ public class AgentManagerBean implements AgentManagerRemote
 	public ArrayList<String> performatives() 
 	{
 		return null;
+	}
+
+	public Map<String, AgentType> getTypes() {
+		return types;
+	}
+	
+    public void setTypes(Map<String, AgentType> types) {
+		this.types = types;
 	}
 
 }

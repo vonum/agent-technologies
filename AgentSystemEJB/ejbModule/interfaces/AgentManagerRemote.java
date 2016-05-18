@@ -29,4 +29,8 @@ public interface AgentManagerRemote
 	
 	//dobavimo listu performativa
 	public ArrayList<String> performatives();
+	
+	public Map<String, AgentType> getTypes();
+	
+	public void setTypes(Map<String, AgentType> types);
 }

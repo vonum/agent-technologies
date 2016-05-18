@@ -49,7 +49,7 @@ public class NodeBean implements NodeRemote{
 	private AgentCenter curNode;
 	
 	private Map<String, AgentCenter> centers;
-	private Map<String, AgentType> types;
+	//private Map<String, AgentType> types;
 	
 	@EJB
 	AgentManagerRemote agentManager;
@@ -70,8 +70,8 @@ public class NodeBean implements NodeRemote{
     	System.out.println("NAPRAVLJENI SMO FAK JEA");
     	System.out.println("Working Directory = " +
                 System.getProperty("user.dir"));
-    	types = agentManager.agentTypes();
-    	System.out.println(types.size());
+    	//types = agentManager.agentTypes();
+    	//System.out.println(types.size());
     }
 
     @POST
@@ -91,38 +91,40 @@ public class NodeBean implements NodeRemote{
         		System.out.println("Sending http to other nodes");
         		
         		//2. master trazi koje tipove agenata podrzava novi cvor
-		        ResteasyClient client1 = new ResteasyClientBuilder().build();
-		        ResteasyWebTarget target1 = client1.target("http://" + center.getAddress() + ":8080/AgentSystemClient/rest/agents/classes");
-		        Response rsp = target1.request(MediaType.APPLICATION_JSON).get();
-		        Map<String, AgentType> tmp = rsp.readEntity(HashMap.class);
-		        /*for(String key : tmp.keySet())
-		        {
-		        	if(!types.containsKey(key))
-		        	{
-		        		types.put(key, tmp.get(key));
-		        	}
-		        }*/
+		        ResteasyClient client = new ResteasyClientBuilder().build();
+		        ResteasyWebTarget target = client.target("http://" + center.getAddress() + ":8080/AgentSystemClient/rest/agents/classes");
+		        Response rsp = target.request(MediaType.APPLICATION_JSON).get();
+		        
+		        Map<String, AgentType> retTypes = rsp.readEntity(HashMap.class);
+		        Map<String, AgentType> types = agentManager.getTypes();
+		        
+	            for(Object map : retTypes.values())
+	            {
+	                if(map instanceof LinkedHashMap)
+	                {
+	                    LinkedHashMap type = (LinkedHashMap) map;
+	                    types.put((String)type.get("name"), new AgentType((String)type.get("name"), (String)type.get("module")));
+	                    agentManager.setTypes(types);
+	                }
+	            }
 
     			//3. master javlja ostalim cvorovima da dodaju taj cvor
     			for(AgentCenter cnt : centers.values())
     			{
-    		        ResteasyClient client = new ResteasyClientBuilder().build();
-    		        ResteasyWebTarget target = client.target("http://" + cnt.getAddress() + ":8080/AgentSystemClient/rest/node/register");
+    		        target = client.target("http://" + cnt.getAddress() + ":8080/AgentSystemClient/rest/node/register");
     		        Response response = target.request().post(Entity.entity(center, MediaType.APPLICATION_JSON));
     			}
     			
     			//4. master dostavlja svima listu tipova agenata koje svi zajedno podrzavaju
 		        for(AgentCenter cnt : centers.values())
 		        {
-    		        ResteasyClient client = new ResteasyClientBuilder().build();
-    		        ResteasyWebTarget target = client.target("http://" + cnt.getAddress() + ":8080/AgentSystemClient/rest/agents/classes");
+    		        target = client.target("http://" + cnt.getAddress() + ":8080/AgentSystemClient/rest/agents/classes");
     		        Response response = target.request().post(Entity.entity(types, MediaType.APPLICATION_JSON));
     		        System.out.println(response.readEntity(String.class));
 		        }
 		        
 		        //5. master novom cvoru dostavlja listu svih podrzanih tipova agenata
-		        ResteasyClient client = new ResteasyClientBuilder().build();
-		        ResteasyWebTarget target = client.target("http://" + center.getAddress() + ":8080/AgentSystemClient/rest/agents/classes");
+		        target = client.target("http://" + center.getAddress() + ":8080/AgentSystemClient/rest/agents/classes");
 		        Response response = target.request().post(Entity.entity(types, MediaType.APPLICATION_JSON));
 		        System.out.println(response.readEntity(String.class));
     			
@@ -194,6 +196,7 @@ public class NodeBean implements NodeRemote{
 			{
 		        ResteasyClient client = new ResteasyClientBuilder().build();
 		        ResteasyWebTarget target = client.target("http://" + center.getAddress() + ":8080/AgentSystemClient/rest/node/unregister");
+		        target.request().post(Entity.entity(alias, MediaType.TEXT_PLAIN));
 			}
 		}
 		else
