@@ -29,8 +29,8 @@ public class AgentLoader
 			String agentClass = Agent.class.getName();
 			
 			String pingClass = PingAgent.class.getSimpleName();
-			
-			String lookupString = "ejb:AgentSystemEJB/AgentSystemEJB//" + pingClass + "!" + agentClass + "?stateful";
+			//AgentSystemEAR/AgentSystemEJB/PingAgent!agents.PingAgent
+			String lookupString = "ejb:AgentSystemEAR/AgentSystemEJB//" + pingClass + "!" + agentClass + "?stateful";
 			
 			System.out.println(lookupString);
 			
