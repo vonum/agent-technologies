@@ -1,12 +1,13 @@
 package agents;
 
-import javax.ejb.LocalBean;
-import javax.ejb.Stateless;
+import javax.ejb.Remote;
+import javax.ejb.Stateful;
 
+import interfaces.Agent;
 import model.SirAgent;
 
-@Stateless(mappedName="beanName")
-@LocalBean
+@Stateful
+@Remote(Agent.class)
 public class PingAgent extends SirAgent
 {
 

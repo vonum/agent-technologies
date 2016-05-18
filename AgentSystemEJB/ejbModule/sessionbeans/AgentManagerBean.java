@@ -88,7 +88,7 @@ public class AgentManagerBean implements AgentManagerRemote
 	{
     	//primer nekog poziva koj delegira nalazenje i pozivanje agenta ka AgentLoader
     	AgentLoader agentLoader = new AgentLoader();
-    	//agentLoader.startAgent(type, name);
+    	agentLoader.startAgent();
     	
 		return null;
 	}
