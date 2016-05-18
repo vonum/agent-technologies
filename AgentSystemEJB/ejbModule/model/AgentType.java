@@ -25,10 +25,10 @@ public class AgentType implements Serializable {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public String getType() {
+	public String getModule() {
 		return module;
 	}
-	public void setType(String module) {
+	public void setModule(String module) {
 		this.module = module;
 	}
 	
