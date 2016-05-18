@@ -26,7 +26,7 @@ import model.AgentType;
 import model.SirAgent;
 import util.Utility;
 
-@Singleton(mappedName="agentBean")
+@Singleton()
 @Remote
 @Lock(LockType.WRITE)
 @Path("/agents")

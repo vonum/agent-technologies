@@ -98,6 +98,7 @@ public class NodeBean implements NodeRemote{
 		        Map<String, AgentType> retTypes = rsp.readEntity(HashMap.class);
 		        Map<String, AgentType> types = agentManager.getTypes();
 		        
+		        //dodavanje agenata u listu postojecih
 	            for(Object map : retTypes.values())
 	            {
 	                if(map instanceof LinkedHashMap)
