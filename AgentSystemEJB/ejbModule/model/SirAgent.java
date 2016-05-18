@@ -1,11 +1,15 @@
 package model;
 
+import java.io.Serializable;
+
 import interfaces.Agent;
 
-public class SirAgent implements Agent
+public class SirAgent implements Agent, Serializable
 {
-	AIDS aids;
+	private AIDS aids;
 
+	public SirAgent(){}
+	
 	@Override
 	public void init(AIDS aids) {
 		// TODO Auto-generated method stub
@@ -29,4 +33,14 @@ public class SirAgent implements Agent
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	public AIDS getAids() {
+		return aids;
+	}
+
+	public void setAids(AIDS aids) {
+		this.aids = aids;
+	}
+	
+	
 }

@@ -1,6 +1,7 @@
 package interfaces;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -16,13 +17,13 @@ public interface AgentManagerRemote
 	public String addTypes(Map<String, AgentType> types);
 	
 	//listu svih trenutno pokrenutih agenta
-	public List<SirAgent> runningAgents();
+	public  ArrayList<SirAgent> runningAgents();
 	
 	//pokrenemo agent, zadamo mu kojeg je tipa i njegovo ime
 	public String startAgent(AgentType type, String name);
 	
 	//zaustavimo odredjenog agenta
-	public String stopAgent(AIDS aids);
+	public String stopAgent(String name);
 	
 	//posaljemo Acl poruku
 	public void sendACLMessage();
@@ -33,4 +34,5 @@ public interface AgentManagerRemote
 	public Map<String, AgentType> getTypes();
 	
 	public void setTypes(Map<String, AgentType> types);
+	
 }

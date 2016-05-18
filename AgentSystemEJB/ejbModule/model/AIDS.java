@@ -1,5 +1,7 @@
 package model;
 
+import java.io.Serializable;
+
 /**
  * 
  * Agent id SERBIA
@@ -7,7 +9,7 @@ package model;
  * Each agent has AIDS
  */
 
-public class AIDS {
+public class AIDS implements Serializable {
 
 	private String name;
 	

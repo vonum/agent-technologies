@@ -4,6 +4,8 @@ import javax.ejb.Remote;
 import javax.ejb.Stateful;
 
 import interfaces.Agent;
+import model.ACLMessage;
+import model.AIDS;
 import model.SirAgent;
 
 @Stateful
@@ -11,4 +13,19 @@ import model.SirAgent;
 public class PingAgent extends SirAgent
 {
 
+	public void init(AIDS aids)
+	{
+		
+	}
+	
+	public void stop()
+	{
+		
+	}
+	
+	public void handleMessage(ACLMessage msg)
+	{
+		
+	}
+	
 }

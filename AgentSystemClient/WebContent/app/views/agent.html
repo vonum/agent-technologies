@@ -1,2 +1,48 @@
-<h1>Agent stuff</h1>
-<button class="btn btn-primary" ng-click="startAgent()">Start agent</button>
+
+<div class="container">
+	<div class="col-md-6">
+		<h3>Running agents</h3>
+		<table class="table">
+	    <thead>
+	      <tr>
+	        <th>Agent name</th>
+	         <th>Agent type</th>
+	         <th>Agent host</th>
+	         <th></th>
+	      </tr>
+	    </thead>
+	    <tbody>
+	      <tr class="success" ng-repeat="agent in runningAgents">
+	        <td>{{ agent.aids.name}}</td>
+	        <td>{{ agent.aids.type.name}}</td>
+	        <td>{{ agent.aids.host.alias}}</td>
+	        <td><button class="btn btn-danger" ng-click="stopAgent(agent.aids)">Stop</button></td>
+	      </tr>
+	
+	   
+	    </tbody>
+	  </table>
+  </div>
+	
+	
+	
+<div class="col-md-6">
+		<h3>Agent types</h3>
+		<table class="table">
+	    <thead>
+	      <tr>
+	        <th>Agent type</th>
+	        <th></th>
+	
+	      </tr>
+	    </thead>
+	    <tbody>
+	      <tr class="success" ng-repeat="type in agentTypes">
+	 		<td> {{ type.name }}</td>
+	 		<td> <button class="btn btn-success" ng-click="startAgent(type.name, type.module)">Add agent</button> </td>
+	      </tr>
+	
+	    </tbody>
+	  </table>
+  </div>	
+</div>

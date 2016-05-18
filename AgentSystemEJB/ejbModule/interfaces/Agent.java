@@ -3,7 +3,7 @@ package interfaces;
 import model.ACLMessage;
 import model.AIDS;
 
-public interface Agent 
+public interface Agent
 {
 	public void init(AIDS aids);
 	

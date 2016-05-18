@@ -34,9 +34,15 @@ public class AgentManagerBean implements AgentManagerRemote
 {
 	private Map<String, AgentType> types;
 	
+	private  ArrayList<SirAgent> runningAgents;
+	
+	//ovo je samo da imena agenta budu lel1, lel2, lel3 izmenecemo kasnije
+	private static int count = 0;
+	
 	public AgentManagerBean()
 	{
 		types = new HashMap<String, AgentType>();
+		runningAgents = new  ArrayList<SirAgent>();
 	}
 	
 	@PostConstruct
@@ -74,31 +80,57 @@ public class AgentManagerBean implements AgentManagerRemote
     @Path("/running")
     @Produces(MediaType.APPLICATION_JSON)
 	@Override
-	public ArrayList<SirAgent> runningAgents() 
+	public  ArrayList<SirAgent> runningAgents() 
 	{
 
-		return null;
+		return runningAgents;
 	}
 
     @PUT
-    @Path("/running/{type}/{name}")
+    @Path("/running/")
+    @Consumes(MediaType.APPLICATION_JSON)
 	@Override
 	public String startAgent(@PathParam("type") AgentType type, 
 							@PathParam("name") String name) 
 	{
-    	//primer nekog poziva koj delegira nalazenje i pozivanje agenta ka AgentLoader
-    	AgentLoader agentLoader = new AgentLoader();
-    	agentLoader.startAgent();
     	
-		return null;
+    	name = "lel" + count;
+    	
+    	count++;
+    	
+    	System.out.println(name);
+    	
+    	//primer nekog poziva koj delegira nalazenje i pozivanje agenta ka AgentLoader
+    	AgentLoader agentLoader = new AgentLoader(runningAgents);
+    	agentLoader.startAgent(type, name);
+    	
+    	System.out.println(runningAgents.size());
+    	
+		return "true";
 	}
 
-    @DELETE
-    @Path("/running/{aids}")
+    @GET
+    @Path("/stop")
 	@Override
-	public String stopAgent(@PathParam("aids") AIDS aids) 
+	public String stopAgent(@PathParam("aids") String name) 
 	{
-		return null;
+    	int deletedIndex = -1;
+    	
+    	for(SirAgent milan : runningAgents)
+    	{
+    		//this is true in real life, sad story milan gud bro
+    		if(milan.getAids().getName().equals(name))
+    		{
+    			break;
+    		}
+    		deletedIndex++;
+    	}
+    	
+    	//rip milan
+    	runningAgents.remove(deletedIndex);
+    	System.out.println(runningAgents.size());
+    	
+		return "";
 	}
 
 	@POST
@@ -115,12 +147,6 @@ public class AgentManagerBean implements AgentManagerRemote
 	public ArrayList<String> performatives() 
 	{
 		
-		System.out.println("List of perfomatives");
-		
-		//test poziv za loadovanje agenta, ova metoda se najlakse poziva pa testiram tu
-		AgentLoader agentLoader = new AgentLoader();
-    	agentLoader.startAgent();
-		
 		return null;
 	}
 
@@ -131,5 +157,5 @@ public class AgentManagerBean implements AgentManagerRemote
     public void setTypes(Map<String, AgentType> types) {
 		this.types = types;
 	}
-
+    
 }
