@@ -26,7 +26,7 @@ import model.AgentType;
 import model.SirAgent;
 import util.Utility;
 
-@Singleton
+@Singleton(mappedName="agentBean")
 @Remote
 @Lock(LockType.WRITE)
 @Path("/agents")
@@ -43,6 +43,9 @@ public class AgentManagerBean implements AgentManagerRemote
 	public void init()
 	{
 		types = Utility.readAgentTypesFromFile("AgentSystemResources/types.txt");
+		
+		System.out.println("WE RE HERE");
+		
 	}
 	
     @GET
@@ -85,7 +88,7 @@ public class AgentManagerBean implements AgentManagerRemote
 	{
     	//primer nekog poziva koj delegira nalazenje i pozivanje agenta ka AgentLoader
     	AgentLoader agentLoader = new AgentLoader();
-    	agentLoader.startAgent(type, name);
+    	//agentLoader.startAgent(type, name);
     	
 		return null;
 	}
@@ -111,6 +114,13 @@ public class AgentManagerBean implements AgentManagerRemote
 	@Override
 	public ArrayList<String> performatives() 
 	{
+		
+		System.out.println("List of perfomatives");
+		
+		//test poziv za loadovanje agenta, ova metoda se najlakse poziva pa testiram tu
+		AgentLoader agentLoader = new AgentLoader();
+    	agentLoader.startAgent();
+		
 		return null;
 	}
 

@@ -1,5 +1,9 @@
 package agents;
 
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+
 import model.AgentType;
 /**
  * 
@@ -10,8 +14,16 @@ import model.AgentType;
 public class AgentLoader 
 {
 
-	public void startAgent(AgentType type, String name) 
+	public void startAgent() 
 	{
-		
+		try {
+			InitialContext ctx = new InitialContext();
+			Object o = ctx.lookup("java:comp/env/ejb/agentBean");
+			
+			System.out.println(o);
+		} catch (NamingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }
