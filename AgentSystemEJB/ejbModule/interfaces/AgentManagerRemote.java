@@ -20,10 +20,10 @@ public interface AgentManagerRemote
 	public String addTypes(Map<String, AgentType> types);
 	
 	//listu svih trenutno pokrenutih agenta
-	public  List<SirAgent> runningAgents();
+	public  Map<String, SirAgent> runningAgents();
 	
 	//kada se podigne cvor, dobije listu pokrenutih agenata
-	public void setRunningAgents(List<SirAgent> agents);
+	public void setRunningAgents(Map<String, SirAgent> agents);
 	
 	//pokrenemo agent, zadamo mu kojeg je tipa i njegovo ime
 	public String startAgent(AgentWrapper rapper);
@@ -44,6 +44,6 @@ public interface AgentManagerRemote
 	
 	public void setTypes(Map<String, AgentType> types);
 	
-	public List<SirAgent> getRunningAgents();
+	public Map<String, SirAgent> getRunningAgents();
 	
 }

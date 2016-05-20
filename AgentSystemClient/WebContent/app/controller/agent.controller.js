@@ -8,7 +8,9 @@
 		
 		$scope.startAgent = function(type, module) {
 			
-			var agentData = {"type" : {"name" : type, "module" : module}, "name" : "mulan"};
+			var name = "mulan";
+			
+			var agentData = {"type" : {"name" : type, "module" : module}, "name" : name};
 //			
 //			bootbox.prompt("What is your name?", function(result) {                
 //				  if (result === null) {                                             
@@ -43,7 +45,7 @@
 					}
 				};
 				
-				$scope.runningAgents.splice(i, 1);
+				delete $scope.runningAgents[aids.name];
 				
 			})
 			.error(function() {

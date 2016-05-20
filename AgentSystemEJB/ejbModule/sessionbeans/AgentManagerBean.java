@@ -44,10 +44,8 @@ public class AgentManagerBean implements AgentManagerRemote
 {
 	private Map<String, AgentType> types;
 	
-	private  ArrayList<SirAgent> runningAgents;
-	
-	//ovo je samo da imena agenta budu lel1, lel2, lel3 izmenecemo kasnije
-	private static int count = 0;
+	private  Map<String, SirAgent> runningAgents;
+
 	
 	@EJB
 	NodeRemote node;
@@ -55,7 +53,7 @@ public class AgentManagerBean implements AgentManagerRemote
 	public AgentManagerBean()
 	{
 		types = new HashMap<String, AgentType>();
-		runningAgents = new  ArrayList<SirAgent>();
+		runningAgents = new  HashMap<String, SirAgent>();
 	}
 	
 	@PostConstruct
@@ -93,7 +91,7 @@ public class AgentManagerBean implements AgentManagerRemote
     @Path("/running")
     @Produces(MediaType.APPLICATION_JSON)
 	@Override
-	public List<SirAgent> runningAgents() 
+	public Map<String, SirAgent> runningAgents() 
 	{
 		return runningAgents;
 	}
@@ -102,9 +100,9 @@ public class AgentManagerBean implements AgentManagerRemote
     @Path("/running")
     @Consumes(MediaType.APPLICATION_JSON)
 	@Override
-	public void setRunningAgents(List<SirAgent> agents) {
+	public void setRunningAgents(Map<String, SirAgent> agents) {
 		// TODO Auto-generated method stub
-		this.runningAgents = (ArrayList<SirAgent>) agents;
+		this.runningAgents = (Map<String, SirAgent>) agents;
 	}
     
     @POST
@@ -113,7 +111,7 @@ public class AgentManagerBean implements AgentManagerRemote
     @Override
     public void addRunningAgent(SirAgent agent)
     {	
-    	this.runningAgents.add(agent);
+    	this.runningAgents.put(agent.getAids().getName(), agent);
     }
 
     @PUT
@@ -137,7 +135,7 @@ public class AgentManagerBean implements AgentManagerRemote
 		agent.setAids(aids);
 		
 		//dodamo agenta u listu pokrenutih
-		runningAgents.add(agent);
+		runningAgents.put(agent.getAids().getName(), agent);
     	
         ResteasyClient client = new ResteasyClientBuilder().build();
         ResteasyWebTarget target;
@@ -172,6 +170,11 @@ public class AgentManagerBean implements AgentManagerRemote
     	boolean tmp;
     	tmp = name.endsWith("*");
     	
+    	System.out.println("Ime agenta kojeg izbacujemo: " + name);
+    	//System.out.println(runningAgents.get(name).getAids().getName());
+    	//remove agent from the map
+    	runningAgents.remove(name);
+    	
     	if(!tmp)
     	{   
     		ResteasyClient client = new ResteasyClientBuilder().build();
@@ -199,20 +202,8 @@ public class AgentManagerBean implements AgentManagerRemote
     		name = name.substring(0, name.length() - 1);
     	}
     	
-	    int deletedIndex = -1;
-	    	
-	    for(SirAgent milan : runningAgents)
-	    {
-	    	//this is true in real life, sad story milan gud bro
-	    	if(milan.getAids().getName().equals(name))
-	    	{
-	    		break;
-	    	}
-	    	deletedIndex++;
-	    }
-	    	
-	    //rip milan
-	    runningAgents.remove(deletedIndex);
+	    
+    	
 	    System.out.println(runningAgents.size());
     	
 		return "";
@@ -246,7 +237,7 @@ public class AgentManagerBean implements AgentManagerRemote
 	}
 
 	@Override
-	public List<SirAgent> getRunningAgents() {
+	public Map<String, SirAgent> getRunningAgents() {
 		// TODO Auto-generated method stub
 		return this.runningAgents;
 	}
