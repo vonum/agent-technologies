@@ -142,12 +142,13 @@ public class AgentManagerBean implements AgentManagerRemote
         ResteasyClient client = new ResteasyClientBuilder().build();
         ResteasyWebTarget target;
 		
-		//javimo masteru da doda pokrenutog agenta
-		if(node.getCurNode().getAlias().equals("master"))
+		//javimo masteru da doda pokrenutog agenta, ako nije master
+		if(!node.getCurNode().getAlias().equals("master"))
 		{
 	        target = client.target("http://" + node.getMaster().getAddress() + ":8080/AgentSystemClient/rest/agents/agent");
 	        target.request().post(Entity.entity(agent, MediaType.APPLICATION_JSON));
 		}
+		
         //javimo svim ostalim cvorovima da dodaju pokrenutog agenta
     	for(AgentCenter center : node.getCenters().values())
     	{
