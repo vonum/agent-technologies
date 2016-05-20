@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.annotation.PostConstruct;
+import javax.ejb.EJB;
 import javax.ejb.Lock;
 import javax.ejb.LockType;
 import javax.ejb.Remote;
@@ -21,12 +22,14 @@ import javax.ws.rs.core.MediaType;
 
 import agents.AgentLoader;
 import interfaces.AgentManagerRemote;
+import interfaces.NodeRemote;
 import model.AgentType;
 import model.AgentWrapper;
 import model.SirAgent;
 import util.Utility;
 
-@Singleton()
+
+@Singleton
 @Remote
 @Lock(LockType.WRITE)
 @Path("/agents")
@@ -39,9 +42,8 @@ public class AgentManagerBean implements AgentManagerRemote
 	//ovo je samo da imena agenta budu lel1, lel2, lel3 izmenecemo kasnije
 	private static int count = 0;
 	
-	//@IgnoreDependency
-	//@EJB
-	//NodeRemote nodeBean;
+	@EJB
+	NodeRemote nodeBean;
 	
 	public AgentManagerBean()
 	{

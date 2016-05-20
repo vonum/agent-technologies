@@ -4,10 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import javax.ejb.Remote;
+
 import model.AgentType;
 import model.AgentWrapper;
 import model.SirAgent;
 
+@Remote
 public interface AgentManagerRemote 
 {
 	//dobavimo sve tipove agenta na sistemu

@@ -1,10 +1,12 @@
 package interfaces;
 
-import java.util.List;
 import java.util.Map;
+
+import javax.ejb.Remote;
 
 import model.AgentCenter;
 
+@Remote
 public interface NodeRemote {
 
 	public Object registerAgentCenter(AgentCenter center);
