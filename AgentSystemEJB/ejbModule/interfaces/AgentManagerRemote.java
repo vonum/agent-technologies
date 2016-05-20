@@ -28,6 +28,9 @@ public interface AgentManagerRemote
 	//pokrenemo agent, zadamo mu kojeg je tipa i njegovo ime
 	public String startAgent(AgentWrapper rapper);
 	
+	//dodaj pokrenutog agenta u listu pokrenutih agenata
+	public void addRunningAgent(SirAgent agent);
+	
 	//zaustavimo odredjenog agenta
 	public String stopAgent(String name);
 	

@@ -18,11 +18,18 @@ import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.MediaType;
+
+import org.jboss.resteasy.client.jaxrs.ResteasyClient;
+import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
+import org.jboss.resteasy.client.jaxrs.ResteasyWebTarget;
 
 import agents.AgentLoader;
 import interfaces.AgentManagerRemote;
 import interfaces.NodeRemote;
+import model.AIDS;
+import model.AgentCenter;
 import model.AgentType;
 import model.AgentWrapper;
 import model.SirAgent;
@@ -43,7 +50,7 @@ public class AgentManagerBean implements AgentManagerRemote
 	private static int count = 0;
 	
 	@EJB
-	NodeRemote nodeBean;
+	NodeRemote node;
 	
 	public AgentManagerBean()
 	{
@@ -99,17 +106,57 @@ public class AgentManagerBean implements AgentManagerRemote
 		// TODO Auto-generated method stub
 		this.runningAgents = (ArrayList<SirAgent>) agents;
 	}
+    
+    @POST
+    @Path("/agent")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Override
+    public void addRunningAgent(SirAgent agent)
+    {	
+    	this.runningAgents.add(agent);
+    }
 
     @PUT
     @Path("/running")
     @Consumes(MediaType.APPLICATION_JSON)
 	@Override
 	public String startAgent(AgentWrapper rapper) 
-	{
-    	
+	{	
     	//primer nekog poziva koj delegira nalazenje i pozivanje agenta ka AgentLoader
-    	AgentLoader agentLoader = new AgentLoader(runningAgents);
+    	AgentLoader agentLoader = new AgentLoader();
     	agentLoader.startAgent(rapper.getType(), rapper.getName());
+    	
+		//sad kad smo pokrenuli bean upisemo informacije o datom agentu
+		SirAgent agent = new SirAgent();
+		
+		AIDS aids = new AIDS();
+		
+		aids.setName(rapper.getName());
+		aids.setHost(node.getCurNode());
+		aids.setType(rapper.getType());
+		agent.setAids(aids);
+		
+		//dodamo agenta u listu pokrenutih
+		runningAgents.add(agent);
+    	
+        ResteasyClient client = new ResteasyClientBuilder().build();
+        ResteasyWebTarget target;
+		
+		//javimo masteru da doda pokrenutog agenta
+		if(node.getCurNode().getAlias().equals("master"))
+		{
+	        target = client.target("http://" + node.getMaster().getAddress() + ":8080/AgentSystemClient/rest/agents/agent");
+	        target.request().post(Entity.entity(agent, MediaType.APPLICATION_JSON));
+		}
+        //javimo svim ostalim cvorovima da dodaju pokrenutog agenta
+    	for(AgentCenter center : node.getCenters().values())
+    	{
+    		if(!center.getAlias().equals(node.getCurNode().getAlias()))
+    		{
+    	        target = client.target("http://" + center.getAddress() + ":8080/AgentSystemClient/rest/agents/agent");
+    	        target.request().post(Entity.entity(agent, MediaType.APPLICATION_JSON));
+    		}
+    	}
     	
     	System.out.println(runningAgents.size());
     	
@@ -172,5 +219,7 @@ public class AgentManagerBean implements AgentManagerRemote
 		// TODO Auto-generated method stub
 		return this.runningAgents;
 	}
+
+
     
 }

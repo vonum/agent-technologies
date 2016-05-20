@@ -21,11 +21,11 @@ import model.SirAgent;
 public class AgentLoader 
 {
 
-	 ArrayList<SirAgent> runningAgents;
+	 //ArrayList<SirAgent> runningAgents;
 	
-	public AgentLoader( ArrayList<SirAgent> runningAgents)
+	public AgentLoader()
 	{
-		this.runningAgents = runningAgents;
+		//this.runningAgents = runningAgents;
 	}
 
 	
@@ -47,17 +47,17 @@ public class AgentLoader
 			System.out.println(lookupString);
 			Object o = ctx.lookup(lookupString);
 
-			//sad kad smo pokrenuli bean upismo informacije o datom agentu
-			SirAgent agent = new SirAgent();
-			
-			AIDS aids = new AIDS();
-			
-			aids.setName(name);
-			aids.setHost(new AgentCenter("", "master"));
-			aids.setType(type);
-			agent.setAids(aids);
-			
-			runningAgents.add(agent);
+//			//sad kad smo pokrenuli bean upismo informacije o datom agentu
+//			SirAgent agent = new SirAgent();
+//			
+//			AIDS aids = new AIDS();
+//			
+//			aids.setName(name);
+//			aids.setHost(new AgentCenter("", "master"));
+//			aids.setType(type);
+//			agent.setAids(aids);
+//			
+//			runningAgents.add(agent);
 			
 			
 		} catch (NamingException e) {
