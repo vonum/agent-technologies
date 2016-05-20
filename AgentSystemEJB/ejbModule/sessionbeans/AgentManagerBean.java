@@ -40,6 +40,7 @@ public class AgentManagerBean implements AgentManagerRemote
 	//ovo je samo da imena agenta budu lel1, lel2, lel3 izmenecemo kasnije
 	private static int count = 0;
 	
+	//@IgnoreDependency
 	@EJB
 	NodeRemote nodeBean;
 	
@@ -99,7 +100,7 @@ public class AgentManagerBean implements AgentManagerRemote
 	}
 
     @PUT
-    @Path("/running/{type}/{name}")
+    @Path("/running/")
     @Consumes(MediaType.APPLICATION_JSON)
 	@Override
 	public String startAgent(@PathParam("type") AgentType type, 
