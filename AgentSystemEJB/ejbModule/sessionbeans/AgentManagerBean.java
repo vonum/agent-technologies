@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Map;
 
 import javax.annotation.PostConstruct;
-import javax.ejb.EJB;
 import javax.ejb.Lock;
 import javax.ejb.LockType;
 import javax.ejb.Remote;
@@ -22,8 +21,8 @@ import javax.ws.rs.core.MediaType;
 
 import agents.AgentLoader;
 import interfaces.AgentManagerRemote;
-import interfaces.NodeRemote;
 import model.AgentType;
+import model.AgentWrapper;
 import model.SirAgent;
 import util.Utility;
 
@@ -41,8 +40,8 @@ public class AgentManagerBean implements AgentManagerRemote
 	private static int count = 0;
 	
 	//@IgnoreDependency
-	@EJB
-	NodeRemote nodeBean;
+	//@EJB
+	//NodeRemote nodeBean;
 	
 	public AgentManagerBean()
 	{
@@ -100,22 +99,15 @@ public class AgentManagerBean implements AgentManagerRemote
 	}
 
     @PUT
-    @Path("/running/")
+    @Path("/running")
     @Consumes(MediaType.APPLICATION_JSON)
 	@Override
-	public String startAgent(@PathParam("type") AgentType type, 
-							@PathParam("name") String name) 
+	public String startAgent(AgentWrapper rapper) 
 	{
-    	
-    	name = "lel" + count;
-    	
-    	count++;
-    	
-    	System.out.println(name);
     	
     	//primer nekog poziva koj delegira nalazenje i pozivanje agenta ka AgentLoader
     	AgentLoader agentLoader = new AgentLoader(runningAgents);
-    	agentLoader.startAgent(type, name);
+    	agentLoader.startAgent(rapper.getType(), rapper.getName());
     	
     	System.out.println(runningAgents.size());
     	

@@ -8,7 +8,15 @@
 		
 		$scope.startAgent = function(type, module) {
 			
-			var agentData = {"name" : type, "module" : module};
+			var agentData = {"type" : {"name" : type, "module" : module}, "name" : "mulan"};
+//			
+//			bootbox.prompt("What is your name?", function(result) {                
+//				  if (result === null) {                                             
+//				    Example.show("Prompt dismissed");                              
+//				  } else {
+//				    Example.show("Hi <b>"+result+"</b>");                          
+//				  }
+//				});
 			
 			//zbog jednostavnosti za sad pozivamo ovu metodu
 			$http.put('rest/agents/running', agentData)

@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import model.AgentType;
+import model.AgentWrapper;
 import model.SirAgent;
 
 public interface AgentManagerRemote 
@@ -22,7 +23,7 @@ public interface AgentManagerRemote
 	public void setRunningAgents(List<SirAgent> agents);
 	
 	//pokrenemo agent, zadamo mu kojeg je tipa i njegovo ime
-	public String startAgent(AgentType type, String name);
+	public String startAgent(AgentWrapper rapper);
 	
 	//zaustavimo odredjenog agenta
 	public String stopAgent(String name);
