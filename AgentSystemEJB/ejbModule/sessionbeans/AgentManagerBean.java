@@ -165,25 +165,55 @@ public class AgentManagerBean implements AgentManagerRemote
 	}
 
     @GET
-    @Path("/stop")
+    @Path("/stop/{aids}")
 	@Override
 	public String stopAgent(@PathParam("aids") String name) 
 	{
-    	int deletedIndex = -1;
+    	boolean tmp;
+    	tmp = name.endsWith("*");
     	
-    	for(SirAgent milan : runningAgents)
-    	{
-    		//this is true in real life, sad story milan gud bro
-    		if(milan.getAids().getName().equals(name))
+    	if(!tmp)
+    	{   
+    		ResteasyClient client = new ResteasyClientBuilder().build();
+            ResteasyWebTarget target;
+    		
+            //javimo masteru da izbaci pokrenutog agenta, ako nije master
+    		if(!node.getCurNode().getAlias().equals("master"))
     		{
-    			break;
+    	        target = client.target("http://" + node.getMaster().getAddress() + ":8080/AgentSystemClient/rest/agents/stop/" + name + "*");
+    	        target.request().get();
     		}
-    		deletedIndex++;
+    		
+            //javimo svim ostalim cvorovima da izbace pokrenutog agenta
+        	for(AgentCenter center : node.getCenters().values())
+        	{
+        		if(!center.getAlias().equals(node.getCurNode().getAlias()))
+        		{
+        	        target = client.target("http://" + center.getAddress() + ":8080/AgentSystemClient/rest/agents/stop/" + name + "*");
+        	        target.request().get();
+        		}
+        	}
+    	}
+    	else
+    	{
+    		name = name.substring(0, name.length() - 1);
     	}
     	
-    	//rip milan
-    	runningAgents.remove(deletedIndex);
-    	System.out.println(runningAgents.size());
+	    int deletedIndex = -1;
+	    	
+	    for(SirAgent milan : runningAgents)
+	    {
+	    	//this is true in real life, sad story milan gud bro
+	    	if(milan.getAids().getName().equals(name))
+	    	{
+	    		break;
+	    	}
+	    	deletedIndex++;
+	    }
+	    	
+	    //rip milan
+	    runningAgents.remove(deletedIndex);
+	    System.out.println(runningAgents.size());
     	
 		return "";
 	}

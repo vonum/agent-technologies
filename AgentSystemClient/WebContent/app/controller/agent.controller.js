@@ -33,7 +33,7 @@
 		{
 			console.log(aids);
 			
-			$http.get('rest/agents/stop', aids.name )
+			$http.get('rest/agents/stop/' + aids.name)
 			.success(function() {
 				
 				
