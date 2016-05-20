@@ -63,8 +63,8 @@ public class NodeBean implements NodeRemote{
     	centers = new HashMap<String, AgentCenter>();
     	//centers.put(master.getAlias(), master);
     }
-    
-    @PostConstruct
+
+	@PostConstruct
     public void init()
     {
     	System.out.println("NAPRAVLJENI SMO FAK JEA");
@@ -131,7 +131,11 @@ public class NodeBean implements NodeRemote{
     			
     			centers.put(center.getAlias(), center);	
     			
-    			//6. na kraju vrati listu cvorova novom cvoru 
+    			//6. master cvor dostavlja listu pokrenutih agenata novom cvoru
+    			target = client.target("http://" + center.getAddress() + ":8080/AgentSystemClient/rest/agents/running");
+    			target.request().post(Entity.entity(agentManager.getRunningAgents(), MediaType.APPLICATION_JSON));
+    			
+    			//7. na kraju vrati listu cvorova novom cvoru 
     			return new ArrayList(centers.values());
     		}
     		else
@@ -230,5 +234,20 @@ public class NodeBean implements NodeRemote{
 	{
 		return centers;
 	}
+
+	@Override
+    public AgentCenter getMaster() {
+		return master;
+	}
+
+	@Override
+	public AgentCenter getCurNode() {
+		return curNode;
+	}
 	
+	@Override
+	public Map<String, AgentCenter> getCenters() {
+		return centers;
+	}
+
 }

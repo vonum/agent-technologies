@@ -2,16 +2,17 @@ package sessionbeans;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.annotation.PostConstruct;
+import javax.ejb.EJB;
 import javax.ejb.Lock;
 import javax.ejb.LockType;
 import javax.ejb.Remote;
 import javax.ejb.Singleton;
 import javax.websocket.server.PathParam;
 import javax.ws.rs.Consumes;
-import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
@@ -21,7 +22,7 @@ import javax.ws.rs.core.MediaType;
 
 import agents.AgentLoader;
 import interfaces.AgentManagerRemote;
-import model.AIDS;
+import interfaces.NodeRemote;
 import model.AgentType;
 import model.SirAgent;
 import util.Utility;
@@ -38,6 +39,9 @@ public class AgentManagerBean implements AgentManagerRemote
 	
 	//ovo je samo da imena agenta budu lel1, lel2, lel3 izmenecemo kasnije
 	private static int count = 0;
+	
+	@EJB
+	NodeRemote nodeBean;
 	
 	public AgentManagerBean()
 	{
@@ -80,14 +84,22 @@ public class AgentManagerBean implements AgentManagerRemote
     @Path("/running")
     @Produces(MediaType.APPLICATION_JSON)
 	@Override
-	public  ArrayList<SirAgent> runningAgents() 
+	public List<SirAgent> runningAgents() 
 	{
-
 		return runningAgents;
+	}
+    
+    @POST
+    @Path("/running")
+    @Consumes(MediaType.APPLICATION_JSON)
+	@Override
+	public void setRunningAgents(List<SirAgent> agents) {
+		// TODO Auto-generated method stub
+		this.runningAgents = (ArrayList<SirAgent>) agents;
 	}
 
     @PUT
-    @Path("/running/")
+    @Path("/running/{type}/{name}")
     @Consumes(MediaType.APPLICATION_JSON)
 	@Override
 	public String startAgent(@PathParam("type") AgentType type, 
@@ -150,12 +162,20 @@ public class AgentManagerBean implements AgentManagerRemote
 		return null;
 	}
 
+	@Override
 	public Map<String, AgentType> getTypes() {
 		return types;
 	}
 	
+	@Override
     public void setTypes(Map<String, AgentType> types) {
 		this.types = types;
+	}
+
+	@Override
+	public List<SirAgent> getRunningAgents() {
+		// TODO Auto-generated method stub
+		return this.runningAgents;
 	}
     
 }

@@ -1,6 +1,7 @@
 package interfaces;
 
 import java.util.List;
+import java.util.Map;
 
 import model.AgentCenter;
 
@@ -15,5 +16,11 @@ public interface NodeRemote {
 	public String hiMaster();
 	
 	public String byeMaster();
+	
+	public AgentCenter getMaster();
+	
+	public AgentCenter getCurNode();
+	
+	public Map<String, AgentCenter> getCenters();
 	
 }
