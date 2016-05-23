@@ -67,8 +67,7 @@ atlassian-ide-plugin.xml
 ######################
 # Eclipse
 ######################
- 
-21JMSClient
+
 
 
 *.pydevproject
