@@ -1,4 +1,5 @@
-var agentApp = angular.module("agentApp", ["ui.bootstrap", "ngRoute", "ngWebSocket", "ngCookies"]);
+var agentApp = angular.module("agentApp", ["ui.bootstrap", "ngRoute", 
+                                           "ngWebSocket", "ngCookies"]);
 
 agentApp.config(function($routeProvider) {
 	$routeProvider

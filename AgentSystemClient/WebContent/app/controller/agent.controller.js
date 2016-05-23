@@ -1,33 +1,30 @@
 (function() {
 	angular.module("agentApp").controller("agentController", agentController);
 		
-	agentController.$inject = ["$http", "$scope"];
+	agentController.$inject = ["$http", "$scope", "$uibModal"];
 	
-	function agentController($http, $scope) {
+	function agentController($http, $scope, $uibModal) {
 
 		
 		$scope.startAgent = function(type, module) {
 			
-			var name = "mulan";
+		   var modalInstance = $uibModal.open({
+		          templateUrl: '../AgentSystemClient/app/views/agentModal.html',
+		          controller: 'agentModalController',
+		          resolve: {
+		        	  getAgentType : function() {
+		        		  return {"type" : type, "module" : module};
+		        	  },
+		        	  
+		          }
+		   });
+		   
+		   modalInstance.result.finally(function() {
+			   runningAgents(); //refresh running agents
+		   });
+		    
 			
-			var agentData = {"type" : {"name" : type, "module" : module}, "name" : name};
-//			
-//			bootbox.prompt("What is your name?", function(result) {                
-//				  if (result === null) {                                             
-//				    Example.show("Prompt dismissed");                              
-//				  } else {
-//				    Example.show("Hi <b>"+result+"</b>");                          
-//				  }
-//				});
 			
-			//zbog jednostavnosti za sad pozivamo ovu metodu
-			$http.put('rest/agents/running', agentData)
-			.success(function() {
-				runningAgents(); //refresh running agents
-			})
-			.error(function() {
-				console.log("Error adding agent");
-			});
 		}
 		
 		//kill the fucker he has aids

@@ -39,7 +39,11 @@
 	    <tbody>
 	      <tr class="success" ng-repeat="type in agentTypes">
 	 		<td> {{ type.name }}</td>
-	 		<td> <button class="btn btn-success" ng-click="startAgent(type.name, type.module)">Add agent</button> </td>
+	 		<td> 
+		 		<button class="btn btn-success" ng-click="startAgent(type.name, type.module)" >
+		 		Add agent
+		 		</button> 
+	 		</td>
 	      </tr>
 	
 	    </tbody>
