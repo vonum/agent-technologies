@@ -2,7 +2,6 @@ package sessionbeans;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import javax.annotation.PostConstruct;
@@ -11,6 +10,15 @@ import javax.ejb.Lock;
 import javax.ejb.LockType;
 import javax.ejb.Remote;
 import javax.ejb.Singleton;
+import javax.jms.Connection;
+import javax.jms.ConnectionFactory;
+import javax.jms.MessageConsumer;
+import javax.jms.MessageProducer;
+import javax.jms.Queue;
+import javax.jms.Session;
+import javax.jms.TextMessage;
+import javax.naming.Context;
+import javax.naming.InitialContext;
 import javax.websocket.server.PathParam;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -26,6 +34,8 @@ import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
 import org.jboss.resteasy.client.jaxrs.ResteasyWebTarget;
 
 import agents.AgentLoader;
+import agents.PingAgent;
+import agents.PongAgent;
 import interfaces.AgentManagerRemote;
 import interfaces.NodeRemote;
 import model.AIDS;
@@ -127,6 +137,18 @@ public class AgentManagerBean implements AgentManagerRemote
 		//sad kad smo pokrenuli bean upisemo informacije o datom agentu
 		SirAgent agent = new SirAgent();
 		
+		String agentType = rapper.getType().getName();
+		
+		//cast proper agent type
+		if(agentType.equals("PingAgent"))
+		{
+			agent = (PingAgent) new PingAgent();
+		} 
+		else if(agentType.equals("PingAgent"))
+		{
+			agent = (PongAgent) new PongAgent();
+		}
+		
 		AIDS aids = new AIDS();
 		
 		aids.setName(rapper.getName());
@@ -223,7 +245,39 @@ public class AgentManagerBean implements AgentManagerRemote
 	@Override
 	public ArrayList<String> performatives() 
 	{
-		
+	
+		try {
+			Context context = new InitialContext();
+			ConnectionFactory cf = (ConnectionFactory) context
+					.lookup("jms/RemoteConnectionFactory");
+			final Queue queue = (Queue) context
+					.lookup("jms/queue/mojQueue");
+			context.close();
+			Connection connection = cf.createConnection("guest", "guestguest");
+			final Session session = connection.createSession(false,
+					Session.AUTO_ACKNOWLEDGE);
+
+			connection.start();
+
+			MessageConsumer consumer = session.createConsumer(queue);
+
+		    TextMessage msg = session.createTextMessage("Queue message!");
+		    // The sent timestamp acts as the message's ID
+		    long sent = System.currentTimeMillis();
+		    msg.setLongProperty("sent", sent);
+		    
+			MessageProducer producer = session.createProducer(queue);
+			producer.send(msg);
+			Thread.sleep(1000);
+			System.out.println("Message published. Please check application server's console to see the response from MDB.");
+
+			producer.close();
+			consumer.close();
+			connection.stop();
+		    
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
 		return null;
 	}
 

@@ -68,6 +68,10 @@ atlassian-ide-plugin.xml
 # Eclipse
 ######################
  
+21JMSClient
+MDBProject
+
+
 *.pydevproject
 .project
 .metadata

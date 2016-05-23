@@ -24,6 +24,6 @@ public class PongAgent extends SirAgent
 	
 	public void handleMessage(ACLMessage msg)
 	{
-		
+		System.out.println("PongAgent got hit son!");
 	}
 }

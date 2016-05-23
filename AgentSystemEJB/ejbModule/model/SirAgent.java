@@ -25,6 +25,7 @@ public class SirAgent implements Agent, Serializable
 	@Override
 	public void handleMessage(ACLMessage msg) {
 		// TODO Auto-generated method stub
+		System.out.println("You said hi to sir agent, sir");
 		
 	}
 
