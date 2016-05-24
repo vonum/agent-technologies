@@ -233,25 +233,19 @@ public class AgentManagerBean implements AgentManagerRemote
 	}
 
 	@POST
-	@Path("/messages")
+	@Path("/messages/{name}")
 	@Override
-	public void sendACLMessage() 
+	public void sendACLMessage(@PathParam("name") String name) 
 	{
 		
-	}
-
-	@GET
-	@Path("/messages")
-	@Override
-	public ArrayList<String> performatives() 
-	{
-	
+		System.out.println("Name:  " + name);
+		
 		try {
 			Context context = new InitialContext();
 			ConnectionFactory cf = (ConnectionFactory) context
-					.lookup("jms/RemoteConnectionFactory");
+					.lookup("java:jboss/exported/jms/RemoteConnectionFactory");
 			final Queue queue = (Queue) context
-					.lookup("jms/queue/mojQueue");
+					.lookup("java:jboss/exported/jms/queue/mojQueue");
 			context.close();
 			Connection connection = cf.createConnection("guest", "guestguest");
 			final Session session = connection.createSession(false,
@@ -261,15 +255,10 @@ public class AgentManagerBean implements AgentManagerRemote
 
 			MessageConsumer consumer = session.createConsumer(queue);
 
-		    TextMessage msg = session.createTextMessage("Queue message!");
-		    // The sent timestamp acts as the message's ID
-		    long sent = System.currentTimeMillis();
-		    msg.setLongProperty("sent", sent);
+		    TextMessage msg = session.createTextMessage("shoneAgent");
 		    
 			MessageProducer producer = session.createProducer(queue);
 			producer.send(msg);
-			Thread.sleep(1000);
-			System.out.println("Message published. Please check application server's console to see the response from MDB.");
 
 			producer.close();
 			consumer.close();
@@ -278,6 +267,14 @@ public class AgentManagerBean implements AgentManagerRemote
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
+	}
+
+	@GET
+	@Path("/messages")
+	@Override
+	public ArrayList<String> performatives() 
+	{
+	
 		return null;
 	}
 

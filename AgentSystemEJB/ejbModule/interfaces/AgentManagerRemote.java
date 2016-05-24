@@ -35,7 +35,7 @@ public interface AgentManagerRemote
 	public String stopAgent(String name);
 	
 	//posaljemo Acl poruku
-	public void sendACLMessage();
+	public void sendACLMessage(String name);
 	
 	//dobavimo listu performativa
 	public ArrayList<String> performatives();

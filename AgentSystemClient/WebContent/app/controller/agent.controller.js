@@ -27,6 +27,15 @@
 			
 		}
 		
+		$scope.sendAclMessage = function() {
+			
+			  var modalInstance = $uibModal.open({
+		          templateUrl: '../AgentSystemClient/app/views/aclModal.html',
+		          controller: 'aclModalController'
+		   });
+			
+		}
+		
 		//kill the fucker he has aids
 		$scope.stopAgent = function(aids)
 		{
