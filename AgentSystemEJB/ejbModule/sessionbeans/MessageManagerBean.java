@@ -15,6 +15,7 @@ import javax.naming.InitialContext;
 
 import interfaces.MessageManagerRemote;
 import model.ACLMessage;
+import model.Performative;
 
 /**
  * Session Bean implementation class MessageManagerBean
@@ -33,6 +34,8 @@ public class MessageManagerBean implements MessageManagerRemote {
 	@Override
 	public void post(ACLMessage aclMessage) {
 		// TODO Auto-generated method stub
+		
+		System.out.println("POST value for performative" + aclMessage.getPerformative());
 		
 		try {
 			Context context = new InitialContext();
@@ -57,7 +60,7 @@ public class MessageManagerBean implements MessageManagerRemote {
 			MessageProducer producer = session.createProducer(queue);
 			producer.send(omsg);
 
-			session.close();
+			//session.close();
 			producer.close();
 			consumer.close();
 			connection.stop();
@@ -74,6 +77,7 @@ public class MessageManagerBean implements MessageManagerRemote {
 		ACLMessage message = new ACLMessage();
 		
 		message.setContent(content);
+		message.setPerformative(Performative.REQUEST);
 		
 		return message;
 	}
