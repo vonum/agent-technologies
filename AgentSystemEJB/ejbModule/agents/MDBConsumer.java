@@ -34,13 +34,14 @@ public class MDBConsumer implements MessageListener
 		    try {
 		      //TextMessage tmsg = (TextMessage) msg;
 		    	ObjectMessage omsg = (ObjectMessage) msg;
+		    	System.out.println("MDBConsumer value for performative " + ((ACLMessage)omsg.getObject()).getPerformative());
 		      try {
 		    	  //za sad je samo ime, posle cemo ceo AClMessage objekat dobijati
 		          ACLMessage message = (ACLMessage) omsg.getObject();
 
 		          System.out.println("Received the name from the client: " + message.getContent() );
 		          
-		          msgToAgent(message.getContent());
+		          msgToAgent(message);
 		          
 		      } catch (JMSException e) {
 		          e.printStackTrace();
@@ -54,9 +55,9 @@ public class MDBConsumer implements MessageListener
 	   * Based on the name of the agent we find him and forward him the acl message
 	   * @param name
 	   */
-	  private void msgToAgent(String name) 
+	  private void msgToAgent(ACLMessage message) 
 	  {
-		  SirAgent currAgent = agentManager.getRunningAgents().get(name);
+		  SirAgent currAgent = agentManager.getRunningAgents().get(message.getContent());
 		  
 		  //test object for now
 		  ACLMessage msg = new ACLMessage();
@@ -64,7 +65,7 @@ public class MDBConsumer implements MessageListener
 		  
 		  if(currAgent != null)
 		  {
-			  currAgent.handleMessage(msg);
+			  currAgent.handleMessage(message);
 		  }
 		  else
 		  {
