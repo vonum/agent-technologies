@@ -239,8 +239,7 @@ public class AgentManagerBean implements AgentManagerRemote
 
 		System.out.println(acl.getSender().getName());
 		//setup acl message and post it
-		//ACLMessage message = messageManager.setupMessage(name);
-		//messageManager.post(message);
+		messageManager.post(acl);
 	}
 
 	@GET
