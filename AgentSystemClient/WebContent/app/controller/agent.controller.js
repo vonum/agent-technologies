@@ -31,7 +31,15 @@
 			
 			  var modalInstance = $uibModal.open({
 		          templateUrl: '../AgentSystemClient/app/views/aclModal.html',
-		          controller: 'aclModalController'
+		          controller: 'aclModalController',
+		          resolve: {
+		        	  getPerformatives : function() {
+		        		  return $scope.performatives;
+		        	  },
+		        	  getRunningAgents : function() {
+		        		  return $scope.runningAgents;
+		        	  }
+		          }
 		   });
 			
 		}
@@ -67,6 +75,15 @@
 		})
 		.error(function(d) {
 			console.log("Error loading agent types");
+		});
+		
+		//get list of performatives
+		$http.get('rest/agents/messages')
+		.success(function(d) {
+			$scope.performatives = d;
+		})
+		.error(function(d) {
+			console.log("Error loading performatives");
 		});
 		
 		//load running agents

@@ -1,14 +1,14 @@
 package interfaces;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import javax.ejb.Remote;
-import javax.websocket.server.PathParam;
 
+import model.ACLMessage;
 import model.AgentType;
 import model.AgentWrapper;
+import model.Performative;
 import model.SirAgent;
 
 @Remote
@@ -36,10 +36,10 @@ public interface AgentManagerRemote
 	public String stopAgent(String name);
 	
 	//posaljemo Acl poruku
-	public void sendACLMessage(String name);
+	public void sendACLMessage(ACLMessage acl);
 	
 	//dobavimo listu performativa
-	public ArrayList<String> performatives();
+	public List<Performative> performatives();
 	
 	public Map<String, AgentType> getTypes();
 	

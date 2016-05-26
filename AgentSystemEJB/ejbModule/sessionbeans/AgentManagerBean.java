@@ -1,7 +1,8 @@
 package sessionbeans;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.annotation.PostConstruct;
@@ -10,16 +11,6 @@ import javax.ejb.Lock;
 import javax.ejb.LockType;
 import javax.ejb.Remote;
 import javax.ejb.Singleton;
-import javax.jms.Connection;
-import javax.jms.ConnectionFactory;
-import javax.jms.MessageConsumer;
-import javax.jms.MessageProducer;
-import javax.jms.ObjectMessage;
-import javax.jms.Queue;
-import javax.jms.Session;
-import javax.jms.TextMessage;
-import javax.naming.Context;
-import javax.naming.InitialContext;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -45,6 +36,7 @@ import model.AIDS;
 import model.AgentCenter;
 import model.AgentType;
 import model.AgentWrapper;
+import model.Performative;
 import model.SirAgent;
 import util.Utility;
 
@@ -239,24 +231,24 @@ public class AgentManagerBean implements AgentManagerRemote
 	}
 
 	@POST
-	@Path("/messages/{name}")
+	@Path("/messages/")
+	@Consumes(MediaType.APPLICATION_JSON)
 	@Override
-	public void sendACLMessage(@PathParam("name") String name) 
+	public void sendACLMessage(ACLMessage acl) 
 	{
-		System.out.println("Name:  " + name);
-		
+
+		System.out.println(acl.getSender().getName());
 		//setup acl message and post it
-		ACLMessage message = messageManager.setupMessage(name);
-		messageManager.post(message);
+		//ACLMessage message = messageManager.setupMessage(name);
+		//messageManager.post(message);
 	}
 
 	@GET
 	@Path("/messages")
 	@Override
-	public ArrayList<String> performatives() 
+	public List<Performative> performatives() 
 	{
-	
-		return null;
+		return Arrays.asList(Performative.values());
 	}
 
 	@Override

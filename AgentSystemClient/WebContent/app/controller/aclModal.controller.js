@@ -1,20 +1,77 @@
 (function() {
 	angular.module("agentApp").controller("aclModalController", aclModalController);
 		
-	aclModalController.$inject = ['$uibModalInstance', '$scope', '$http'];
+	aclModalController.$inject = ['$uibModalInstance', '$scope', '$http', 'getPerformatives', 'getRunningAgents'];
 	
-	function aclModalController($uibModalInstance, $scope, $http) {
+	function aclModalController($uibModalInstance, $scope, $http, getPerformatives, getRunningAgents) {
 		
-		$scope.name = "";
+		$scope.aclMsg = {
+			"performative" : "",
+			"sender" : "", //AIDS
+			"receivers" : [], //AIDS list
+			"replyTo" : "", //AIDS
+			"content" : "",
+			"contentObject" : "", //Object
+			"userArgs" : {}, //HashMap
+			"encoding" : "milan",
+			"ontology" : "milan",
+			"protocol" : "milan",
+			"conversationId" : "",
+			"replayWith" : "",
+			"inReplayTo" : "",
+			"replyBy" : ""		
+		};
 		
+		//from map of agents to array of agents
+		$scope.agents = [];
+		for(var prop in getRunningAgents) {
+			$scope.agents.push(getRunningAgents[prop].aids);
+		}
+		
+		//SELECT FOR PERFORMATIVE
+		$scope.currPerformative = "INFORM";
+		$scope.performatives = getPerformatives;
+		
+		$scope.selectPerformative = function(p) {
+			$scope.currPerformative = p;
+		}
+		
+		//SELECT FOR SENDER
+		$scope.currSender = {"name": "none"};
+		
+		$scope.selectSender = function(s) {
+			$scope.currSender = s;
+		}
+		
+		//SELECT FOR RECEIVER
+		$scope.currReceiver = {"name" : "none"};
+		
+		$scope.selectReceiver = function(r) {
+			$scope.currReceiver = r;
+		}
+		
+		//SELECT FOR REPLAY TO
+		$scope.currReplayTo = {"name" : "none"};
+		
+		$scope.selectReplayTo = function(r) {
+			$scope.currReplayTo = r;
+		}
 		
 		$scope.cancel = function() {
 			$uibModalInstance.dismiss('cancel');
 		}
 		
-	
 		$scope.sendMsg = function() {
-			$http.post('rest/agents/messages/' + $scope.name)
+			
+			//setup acl data
+			$scope.aclMsg.performative = $scope.currPerformative;
+			$scope.aclMsg.sender = $scope.currSender;
+			$scope.aclMsg.receivers.push($scope.currReceiver);
+			$scope.aclMsg.replyTo = $scope.currReplayTo;
+			
+			console.log($scope.aclMsg);
+			
+			$http.post('rest/agents/messages/', $scope.aclMsg)
 			.success(function(d) {
 				$scope.cancel();
 			})
