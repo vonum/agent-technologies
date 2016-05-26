@@ -1,14 +1,12 @@
 package agents;
 
-import java.util.HashMap;
-
 import javax.ejb.ActivationConfigProperty;
 import javax.ejb.EJB;
 import javax.ejb.MessageDriven;
 import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.MessageListener;
-import javax.jms.TextMessage;
+import javax.jms.ObjectMessage;
 
 import interfaces.AgentManagerRemote;
 import model.ACLMessage;
@@ -34,14 +32,15 @@ public class MDBConsumer implements MessageListener
 	
 	  public void onMessage (Message msg) {
 		    try {
-		      TextMessage tmsg = (TextMessage) msg;
+		      //TextMessage tmsg = (TextMessage) msg;
+		    	ObjectMessage omsg = (ObjectMessage) msg;
 		      try {
 		    	  //za sad je samo ime, posle cemo ceo AClMessage objekat dobijati
-		          String name = tmsg.getText();
+		          ACLMessage message = (ACLMessage) omsg.getObject();
 
-		          System.out.println("Received the name from the client: " + name );
+		          System.out.println("Received the name from the client: " + message.getContent() );
 		          
-		          msgToAgent(name);
+		          msgToAgent(message.getContent());
 		          
 		      } catch (JMSException e) {
 		          e.printStackTrace();

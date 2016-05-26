@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.ejb.Remote;
+import javax.websocket.server.PathParam;
 
 import model.AgentType;
 import model.AgentWrapper;

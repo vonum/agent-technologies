@@ -14,17 +14,18 @@ import javax.jms.Connection;
 import javax.jms.ConnectionFactory;
 import javax.jms.MessageConsumer;
 import javax.jms.MessageProducer;
+import javax.jms.ObjectMessage;
 import javax.jms.Queue;
 import javax.jms.Session;
 import javax.jms.TextMessage;
 import javax.naming.Context;
 import javax.naming.InitialContext;
-import javax.websocket.server.PathParam;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.MediaType;
@@ -37,7 +38,9 @@ import agents.AgentLoader;
 import agents.PingAgent;
 import agents.PongAgent;
 import interfaces.AgentManagerRemote;
+import interfaces.MessageManagerRemote;
 import interfaces.NodeRemote;
+import model.ACLMessage;
 import model.AIDS;
 import model.AgentCenter;
 import model.AgentType;
@@ -60,6 +63,9 @@ public class AgentManagerBean implements AgentManagerRemote
 	@EJB
 	NodeRemote node;
 	
+	@EJB
+	MessageManagerRemote messageManager;
+	
 	public AgentManagerBean()
 	{
 		types = new HashMap<String, AgentType>();
@@ -70,8 +76,8 @@ public class AgentManagerBean implements AgentManagerRemote
 	public void init()
 	{
 		types = Utility.readAgentTypesFromFile("AgentSystemResources/types.txt");
-		
-		System.out.println("WE RE HERE");
+		System.out.println(System.getProperty("user.dir"));
+		System.out.println("Initialized AgentManagerBean");
 		
 	}
 	
@@ -237,36 +243,11 @@ public class AgentManagerBean implements AgentManagerRemote
 	@Override
 	public void sendACLMessage(@PathParam("name") String name) 
 	{
-		
 		System.out.println("Name:  " + name);
 		
-		try {
-			Context context = new InitialContext();
-			ConnectionFactory cf = (ConnectionFactory) context
-					.lookup("java:jboss/exported/jms/RemoteConnectionFactory");
-			final Queue queue = (Queue) context
-					.lookup("java:jboss/exported/jms/queue/mojQueue");
-			context.close();
-			Connection connection = cf.createConnection("guest", "guestguest");
-			final Session session = connection.createSession(false,
-					Session.AUTO_ACKNOWLEDGE);
-
-			connection.start();
-
-			MessageConsumer consumer = session.createConsumer(queue);
-
-		    TextMessage msg = session.createTextMessage("shoneAgent");
-		    
-			MessageProducer producer = session.createProducer(queue);
-			producer.send(msg);
-
-			producer.close();
-			consumer.close();
-			connection.stop();
-		    
-		} catch (Exception ex) {
-			ex.printStackTrace();
-		}
+		//setup acl message and post it
+		ACLMessage message = messageManager.setupMessage(name);
+		messageManager.post(message);
 	}
 
 	@GET

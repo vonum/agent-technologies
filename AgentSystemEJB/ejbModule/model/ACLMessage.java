@@ -1,5 +1,6 @@
 package model;
 
+import java.io.Serializable;
 import java.util.HashMap;
 
 /**
@@ -10,7 +11,7 @@ import java.util.HashMap;
  */
 
 
-public class ACLMessage {
+public class ACLMessage implements Serializable{
 	
 	private Performative performative;
 	
