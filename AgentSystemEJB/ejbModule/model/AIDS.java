@@ -43,7 +43,17 @@ public class AIDS implements Serializable {
 		this.type = type;
 	}
 	
+	@Override
+	public int hashCode()
+	{
+		return name.hashCode();
+	}
 	
+	@Override
+	public boolean equals(Object o)
+	{
+		return this.name.equals(o);
+	}
 	
 	
 	

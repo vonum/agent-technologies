@@ -50,7 +50,7 @@ public class AgentManagerBean implements AgentManagerRemote
 {
 	private Map<String, AgentType> types;
 	
-	private  Map<String, SirAgent> runningAgents;
+	private  Map<AIDS, Object> runningAgents;
 
 	
 	@EJB
@@ -62,7 +62,7 @@ public class AgentManagerBean implements AgentManagerRemote
 	public AgentManagerBean()
 	{
 		types = new HashMap<String, AgentType>();
-		runningAgents = new  HashMap<String, SirAgent>();
+		runningAgents = new  HashMap<AIDS, Object>();
 	}
 	
 	@PostConstruct
@@ -100,7 +100,7 @@ public class AgentManagerBean implements AgentManagerRemote
     @Path("/running")
     @Produces(MediaType.APPLICATION_JSON)
 	@Override
-	public Map<String, SirAgent> runningAgents() 
+	public Map<AIDS, Object> runningAgents() 
 	{
 		return runningAgents;
 	}
@@ -109,9 +109,9 @@ public class AgentManagerBean implements AgentManagerRemote
     @Path("/running")
     @Consumes(MediaType.APPLICATION_JSON)
 	@Override
-	public void setRunningAgents(Map<String, SirAgent> agents) {
+	public void setRunningAgents(Map<AIDS, Object> agents) {
 		// TODO Auto-generated method stub
-		this.runningAgents = (Map<String, SirAgent>) agents;
+		this.runningAgents = (Map<AIDS, Object>) agents;
 	}
     
     @POST
@@ -120,7 +120,7 @@ public class AgentManagerBean implements AgentManagerRemote
     @Override
     public void addRunningAgent(SirAgent agent)
     {	
-    	this.runningAgents.put(agent.getAids().getName(), agent);
+    	this.runningAgents.put(agent.getAids(), agent);
     }
 
     @PUT
@@ -133,21 +133,10 @@ public class AgentManagerBean implements AgentManagerRemote
     	AgentLoader agentLoader = new AgentLoader();
     	Agent a = agentLoader.startAgent(rapper.getType(), rapper.getName());
     	
-    	
 		//sad kad smo pokrenuli bean upisemo informacije o datom agentu
 		SirAgent agent = new SirAgent();
 		
 		String agentType = rapper.getType().getName();
-		
-		//cast proper agent type
-		if(agentType.equals("PingAgent"))
-		{
-			agent = (PingAgent) new PingAgent();
-		} 
-		else if(agentType.equals("PongAgent"))
-		{
-			agent = (PongAgent) new PongAgent();
-		}
 		
 		AIDS aids = new AIDS();
 		
@@ -156,29 +145,33 @@ public class AgentManagerBean implements AgentManagerRemote
 		aids.setType(rapper.getType());
 		agent.setAids(aids);
 		
+		System.out.println("Dodo agenta");
+		
+		Agent ag = a;
+		
 		//dodamo agenta u listu pokrenutih
-		runningAgents.put(agent.getAids().getName(), agent);
+		runningAgents.put(agent.getAids(), ag);
     	
-        ResteasyClient client = new ResteasyClientBuilder().build();
-        ResteasyWebTarget target;
-		
-		//javimo masteru da doda pokrenutog agenta, ako nije master
-		if(!node.getCurNode().getAlias().equals("master"))
-		{
-	        target = client.target("http://" + node.getMaster().getAddress() + ":8080/AgentSystemClient/rest/agents/agent");
-	        target.request().post(Entity.entity(agent, MediaType.APPLICATION_JSON));
-		}
-		
-        //javimo svim ostalim cvorovima da dodaju pokrenutog agenta
-    	for(AgentCenter center : node.getCenters().values())
-    	{
-    		if(!center.getAlias().equals(node.getCurNode().getAlias()))
-    		{
-    	        target = client.target("http://" + center.getAddress() + ":8080/AgentSystemClient/rest/agents/agent");
-    	        target.request().post(Entity.entity(agent, MediaType.APPLICATION_JSON));
-    		}
-    	}
-    	
+//        ResteasyClient client = new ResteasyClientBuilder().build();
+//        ResteasyWebTarget target;
+//		
+//		//javimo masteru da doda pokrenutog agenta, ako nije master
+//		if(!node.getCurNode().getAlias().equals("master"))
+//		{
+//	        target = client.target("http://" + node.getMaster().getAddress() + ":8080/AgentSystemClient/rest/agents/agent");
+//	        target.request().post(Entity.entity(agent, MediaType.APPLICATION_JSON));
+//		}
+//		
+//        //javimo svim ostalim cvorovima da dodaju pokrenutog agenta
+//    	for(AgentCenter center : node.getCenters().values())
+//    	{
+//    		if(!center.getAlias().equals(node.getCurNode().getAlias()))
+//    		{
+//    	        target = client.target("http://" + center.getAddress() + ":8080/AgentSystemClient/rest/agents/agent");
+//    	        target.request().post(Entity.entity(agent, MediaType.APPLICATION_JSON));
+//    		}
+//    	}
+//    	
     	System.out.println(runningAgents.size());
     	
 		return "true";
@@ -263,7 +256,7 @@ public class AgentManagerBean implements AgentManagerRemote
 	}
 
 	@Override
-	public Map<String, SirAgent> getRunningAgents() {
+	public Map<AIDS, Object> getRunningAgents() {
 		// TODO Auto-generated method stub
 		return this.runningAgents;
 	}

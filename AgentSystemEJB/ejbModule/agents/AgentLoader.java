@@ -48,14 +48,7 @@ public class AgentLoader
 			
 			Agent a = (Agent)o;
 			
-			System.out.println(a.hashCode());
-			
-//			PingRemote p = (PingRemote) o;
-//			
-//			if(p != null) 
-//			{
-//				System.out.println("Ping nije nula");
-//			}
+			System.out.println("Agent loader"); 
 
 			return (Agent)o;
 			
