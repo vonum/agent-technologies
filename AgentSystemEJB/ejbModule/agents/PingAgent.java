@@ -27,7 +27,7 @@ public class PingAgent extends SirAgent
 	public void handleMessage(ACLMessage msg)
 	{
 		System.out.println("Ping got hit son!");
-		System.out.println(msg.getConversationId());
+
 		System.out.println("WUT");
 		
 		System.out.println(msg.getPerformative());

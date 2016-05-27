@@ -42,23 +42,9 @@ public class AgentLoader
 			String lookupString = "ejb:AgentSystemEAR/AgentSystemEJB//" + pingClass + "!" + agentClass + "?stateful";
 			
 			System.out.println(lookupString);
-			Object o = ctx.lookup(lookupString);
+			Object agent = ctx.lookup(lookupString);
 			
-			Agent tmp = (Agent) o;
-
-//			//sad kad smo pokrenuli bean upismo informacije o datom agentu
-//			SirAgent agent = new SirAgent();
-//			
-//			AIDS aids = new AIDS();
-//			
-//			aids.setName(name);
-//			aids.setHost(new AgentCenter("", "master"));
-//			aids.setType(type);
-//			agent.setAids(aids);
-//			
-//			runningAgents.add(agent);
-			
-			return tmp;
+			return (Agent) agent;
 			
 		} catch (NamingException e) {
 			// TODO Auto-generated catch block

@@ -51,7 +51,6 @@ public class AgentManagerBean implements AgentManagerRemote
 	private Map<String, AgentType> types;
 	
 	private  Map<String, Agent> runningAgents;
-
 	
 	@EJB
 	NodeRemote node;
@@ -130,24 +129,14 @@ public class AgentManagerBean implements AgentManagerRemote
 	public String startAgent(AgentWrapper rapper) 
 	{	
     	//primer nekog poziva koj delegira nalazenje i pozivanje agenta ka AgentLoader
+    	//izmeniti da se ne instancira ovde
+    	//staviti da bude stateless bean
     	AgentLoader agentLoader = new AgentLoader();
     	Agent agent = agentLoader.startAgent(rapper.getType(), rapper.getName());
-    	
-		//sad kad smo pokrenuli bean upisemo informacije o datom agentu
-		//SirAgent agent = new SirAgent();
 		
 		String agentType = rapper.getType().getName();
 		
-		//cast proper agent type
-		/*if(agentType.equals("PingAgent"))
-		{
-			agent = (PingAgent) new PingAgent();
-		} 
-		else if(agentType.equals("PongAgent"))
-		{
-			agent = (PongAgent) new PongAgent();
-		}*/
-		
+		//podesavanje AgentIDSerbia
 		AIDS aids = new AIDS();
 		
 		aids.setName(rapper.getName());

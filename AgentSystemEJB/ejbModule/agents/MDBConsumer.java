@@ -59,10 +59,6 @@ public class MDBConsumer implements MessageListener
 	  {
 		  Agent currAgent = agentManager.getRunningAgents().get(message.getContent());
 		  
-		  //test object for now
-		  ACLMessage msg = new ACLMessage();
-		  msg.setConversationId("max kek");
-		  
 		  if(currAgent != null)
 		  {
 			  currAgent.handleMessage(message);
