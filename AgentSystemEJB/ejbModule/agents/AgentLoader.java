@@ -35,11 +35,13 @@ public class AgentLoader
 			jndiProps.put("jboss.naming.client.ejb.context", true);
 			InitialContext ctx = new InitialContext(jndiProps);
 			
-			String agentClass = Agent.class.getName();
-				
-			String pingClass = type.getName();
+			//interface za stateful bean
+			String agentInterface = Agent.class.getName();
+			
+			//class za stateful bean
+			String agentClass = type.getName();
 
-			String lookupString = "ejb:AgentSystemEAR/AgentSystemEJB//" + pingClass + "!" + agentClass + "?stateful";
+			String lookupString = "ejb:AgentSystemEAR/AgentSystemEJB//" + agentClass + "!" + agentInterface + "?stateful";
 			
 			System.out.println(lookupString);
 			Object agent = ctx.lookup(lookupString);

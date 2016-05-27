@@ -1,0 +1,73 @@
+package agents;
+
+import java.io.File;
+
+import javax.ejb.EJB;
+import javax.ejb.Remote;
+import javax.ejb.Stateful;
+
+import interfaces.Agent;
+import interfaces.MessageManagerRemote;
+import interfaces.NodeRemote;
+import model.ACLMessage;
+import model.AIDS;
+import model.AgentType;
+import model.SirAgent;
+
+/**
+ * Session Bean implementation class ReduceAgent
+ */
+@Stateful
+@Remote(Agent.class)
+public class ReduceAgent extends SirAgent{
+
+	@EJB
+	NodeRemote center;
+	
+	@EJB
+	MessageManagerRemote messageManager;
+	
+	
+    /**
+     * Default constructor. 
+     */
+    public ReduceAgent() {
+        // TODO Auto-generated constructor stub
+    }
+    
+    @Override
+	public void init(AIDS aids)
+	{
+		
+	}
+	
+    @Override
+	public void stop()
+	{
+		
+	}
+    
+    @Override
+    public void handleMessage(ACLMessage msg)
+    {
+    	AgentLoader loader = new AgentLoader();
+    	
+    	System.out.println(msg.getContent());
+    	System.out.println("WE GOT HIT");
+    	
+    	File folder = new File(msg.getContent());
+    	File[] listOfFiles = folder.listFiles();
+
+    	for (int i = 0; i < listOfFiles.length; i++) 
+    	{
+    		if (listOfFiles[i].isFile()) 
+    		{
+    			System.out.println("File " + listOfFiles[i].getName());
+    			Agent agent = loader.startAgent(new AgentType("MapAgent", "pls"), "");
+    	    } else if (listOfFiles[i].isDirectory()) {
+    	    	System.out.println("Directory " + listOfFiles[i].getName());
+    	    }
+    	}
+    }
+
+}
