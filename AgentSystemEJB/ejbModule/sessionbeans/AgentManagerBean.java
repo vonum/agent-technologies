@@ -28,6 +28,7 @@ import org.jboss.resteasy.client.jaxrs.ResteasyWebTarget;
 import agents.AgentLoader;
 import agents.PingAgent;
 import agents.PongAgent;
+import interfaces.Agent;
 import interfaces.AgentManagerRemote;
 import interfaces.MessageManagerRemote;
 import interfaces.NodeRemote;
@@ -130,7 +131,8 @@ public class AgentManagerBean implements AgentManagerRemote
 	{	
     	//primer nekog poziva koj delegira nalazenje i pozivanje agenta ka AgentLoader
     	AgentLoader agentLoader = new AgentLoader();
-    	agentLoader.startAgent(rapper.getType(), rapper.getName());
+    	Agent a = agentLoader.startAgent(rapper.getType(), rapper.getName());
+    	
     	
 		//sad kad smo pokrenuli bean upisemo informacije o datom agentu
 		SirAgent agent = new SirAgent();

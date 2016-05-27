@@ -1,6 +1,5 @@
 package agents;
 
-import java.util.ArrayList;
 import java.util.Hashtable;
 
 import javax.naming.Context;
@@ -8,8 +7,8 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
 import interfaces.Agent;
-import model.AIDS;
-import model.AgentCenter;
+import interfaces.PingRemote;
+import model.ACLMessage;
 import model.AgentType;
 import model.SirAgent;
 /**
@@ -29,7 +28,7 @@ public class AgentLoader
 	}
 
 	
-	public void startAgent(AgentType type, String name)
+	public Agent startAgent(AgentType type, String name)
 	{
 		try {
 
@@ -46,23 +45,25 @@ public class AgentLoader
 			
 			System.out.println(lookupString);
 			Object o = ctx.lookup(lookupString);
-
-//			//sad kad smo pokrenuli bean upismo informacije o datom agentu
-//			SirAgent agent = new SirAgent();
-//			
-//			AIDS aids = new AIDS();
-//			
-//			aids.setName(name);
-//			aids.setHost(new AgentCenter("", "master"));
-//			aids.setType(type);
-//			agent.setAids(aids);
-//			
-//			runningAgents.add(agent);
 			
+			Agent a = (Agent)o;
+			
+			System.out.println(a.hashCode());
+			
+//			PingRemote p = (PingRemote) o;
+//			
+//			if(p != null) 
+//			{
+//				System.out.println("Ping nije nula");
+//			}
+
+			return (Agent)o;
 			
 		} catch (NamingException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} 
+		
+		return null;
 	}
 }
