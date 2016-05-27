@@ -142,7 +142,7 @@ public class AgentManagerBean implements AgentManagerRemote
 		{
 			agent = (PingAgent) new PingAgent();
 		} 
-		else if(agentType.equals("PingAgent"))
+		else if(agentType.equals("PongAgent"))
 		{
 			agent = (PongAgent) new PongAgent();
 		}
