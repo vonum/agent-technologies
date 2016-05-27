@@ -35,10 +35,12 @@ public class SirAgent implements Agent, Serializable
 		return null;
 	}
 
+	@Override
 	public AIDS getAids() {
 		return aids;
 	}
 
+	@Override
 	public void setAids(AIDS aids) {
 		this.aids = aids;
 	}

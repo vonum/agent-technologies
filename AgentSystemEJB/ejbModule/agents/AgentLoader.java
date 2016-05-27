@@ -1,6 +1,5 @@
 package agents;
 
-import java.util.ArrayList;
 import java.util.Hashtable;
 
 import javax.naming.Context;
@@ -8,8 +7,6 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
 import interfaces.Agent;
-import model.AIDS;
-import model.AgentCenter;
 import model.AgentType;
 import model.SirAgent;
 /**
@@ -29,7 +26,7 @@ public class AgentLoader
 	}
 
 	
-	public void startAgent(AgentType type, String name)
+	public Agent startAgent(AgentType type, String name)
 	{
 		try {
 
@@ -46,6 +43,8 @@ public class AgentLoader
 			
 			System.out.println(lookupString);
 			Object o = ctx.lookup(lookupString);
+			
+			Agent tmp = (Agent) o;
 
 //			//sad kad smo pokrenuli bean upismo informacije o datom agentu
 //			SirAgent agent = new SirAgent();
@@ -59,10 +58,12 @@ public class AgentLoader
 //			
 //			runningAgents.add(agent);
 			
+			return tmp;
 			
 		} catch (NamingException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			return null;
 		} 
 	}
 }

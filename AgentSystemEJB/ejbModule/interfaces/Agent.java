@@ -12,4 +12,8 @@ public interface Agent
 	public void handleMessage(ACLMessage msg);
 
 	public String ping();
+	
+	public void setAids(AIDS aids);
+	
+	public AIDS getAids();
 }

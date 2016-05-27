@@ -8,9 +8,9 @@ import javax.jms.Message;
 import javax.jms.MessageListener;
 import javax.jms.ObjectMessage;
 
+import interfaces.Agent;
 import interfaces.AgentManagerRemote;
 import model.ACLMessage;
-import model.SirAgent;
 
 /**
  * 
@@ -57,7 +57,7 @@ public class MDBConsumer implements MessageListener
 	   */
 	  private void msgToAgent(ACLMessage message) 
 	  {
-		  SirAgent currAgent = agentManager.getRunningAgents().get(message.getContent());
+		  Agent currAgent = agentManager.getRunningAgents().get(message.getContent());
 		  
 		  //test object for now
 		  ACLMessage msg = new ACLMessage();

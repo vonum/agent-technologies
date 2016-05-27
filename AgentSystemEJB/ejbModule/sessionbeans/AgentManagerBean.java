@@ -28,6 +28,7 @@ import org.jboss.resteasy.client.jaxrs.ResteasyWebTarget;
 import agents.AgentLoader;
 import agents.PingAgent;
 import agents.PongAgent;
+import interfaces.Agent;
 import interfaces.AgentManagerRemote;
 import interfaces.MessageManagerRemote;
 import interfaces.NodeRemote;
@@ -49,7 +50,7 @@ public class AgentManagerBean implements AgentManagerRemote
 {
 	private Map<String, AgentType> types;
 	
-	private  Map<String, SirAgent> runningAgents;
+	private  Map<String, Agent> runningAgents;
 
 	
 	@EJB
@@ -61,7 +62,7 @@ public class AgentManagerBean implements AgentManagerRemote
 	public AgentManagerBean()
 	{
 		types = new HashMap<String, AgentType>();
-		runningAgents = new  HashMap<String, SirAgent>();
+		runningAgents = new  HashMap<String, Agent>();
 	}
 	
 	@PostConstruct
@@ -99,7 +100,7 @@ public class AgentManagerBean implements AgentManagerRemote
     @Path("/running")
     @Produces(MediaType.APPLICATION_JSON)
 	@Override
-	public Map<String, SirAgent> runningAgents() 
+	public Map<String, Agent> runningAgents() 
 	{
 		return runningAgents;
 	}
@@ -108,16 +109,16 @@ public class AgentManagerBean implements AgentManagerRemote
     @Path("/running")
     @Consumes(MediaType.APPLICATION_JSON)
 	@Override
-	public void setRunningAgents(Map<String, SirAgent> agents) {
+	public void setRunningAgents(Map<String, Agent> agents) {
 		// TODO Auto-generated method stub
-		this.runningAgents = (Map<String, SirAgent>) agents;
+		this.runningAgents = (Map<String, Agent>) agents;
 	}
     
     @POST
     @Path("/agent")
     @Consumes(MediaType.APPLICATION_JSON)
     @Override
-    public void addRunningAgent(SirAgent agent)
+    public void addRunningAgent(Agent agent)
     {	
     	this.runningAgents.put(agent.getAids().getName(), agent);
     }
@@ -130,22 +131,22 @@ public class AgentManagerBean implements AgentManagerRemote
 	{	
     	//primer nekog poziva koj delegira nalazenje i pozivanje agenta ka AgentLoader
     	AgentLoader agentLoader = new AgentLoader();
-    	agentLoader.startAgent(rapper.getType(), rapper.getName());
+    	Agent agent = agentLoader.startAgent(rapper.getType(), rapper.getName());
     	
 		//sad kad smo pokrenuli bean upisemo informacije o datom agentu
-		SirAgent agent = new SirAgent();
+		//SirAgent agent = new SirAgent();
 		
 		String agentType = rapper.getType().getName();
 		
 		//cast proper agent type
-		if(agentType.equals("PingAgent"))
+		/*if(agentType.equals("PingAgent"))
 		{
 			agent = (PingAgent) new PingAgent();
 		} 
 		else if(agentType.equals("PongAgent"))
 		{
 			agent = (PongAgent) new PongAgent();
-		}
+		}*/
 		
 		AIDS aids = new AIDS();
 		
@@ -261,7 +262,7 @@ public class AgentManagerBean implements AgentManagerRemote
 	}
 
 	@Override
-	public Map<String, SirAgent> getRunningAgents() {
+	public Map<String, Agent> getRunningAgents() {
 		// TODO Auto-generated method stub
 		return this.runningAgents;
 	}
