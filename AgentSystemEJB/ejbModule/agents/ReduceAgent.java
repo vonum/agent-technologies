@@ -27,6 +27,7 @@ public class ReduceAgent extends SirAgent{
 	@EJB
 	MessageManagerRemote messageManager;
 	
+	public static int nameGenerator = 0;
 	
     /**
      * Default constructor. 
@@ -64,6 +65,17 @@ public class ReduceAgent extends SirAgent{
     		{
     			System.out.println("File " + listOfFiles[i].getName());
     			Agent agent = loader.startAgent(new AgentType("MapAgent", "pls"), "");
+    			
+    			/*AIDS agentAIDS = new AIDS();
+    			agentAIDS.setName("map" + Integer.toString(nameGenerator++));
+    			agentAIDS.setType(new AgentType("MapAgent", "pls"));
+    			agentAIDS.setHost(center.getCurNode());
+    			
+    			agent.setAids(agentAIDS);*/
+    			ACLMessage message = new ACLMessage();
+    			message.setContent(msg.getContent() + "\\" + listOfFiles[i].getName());
+    			agent.handleMessage(message);
+    			
     	    } else if (listOfFiles[i].isDirectory()) {
     	    	System.out.println("Directory " + listOfFiles[i].getName());
     	    }

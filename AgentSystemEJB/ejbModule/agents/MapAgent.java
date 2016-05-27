@@ -1,5 +1,9 @@
 package agents;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+
 import javax.ejb.EJB;
 import javax.ejb.Remote;
 import javax.ejb.Stateful;
@@ -49,6 +53,25 @@ public class MapAgent extends SirAgent {
     {
     	System.out.println(msg.getContent());
     	System.out.println("MAP GOT HIT");
+    	
+    	FileInputStream fileInput;
+		try {
+			fileInput = new FileInputStream(msg.getContent());
+			
+	    	int r;
+	    	while ((r = fileInput.read()) != -1) {
+	    	   char c = (char) r;
+	    	   System.out.println(c);
+	    	}
+	    	fileInput.close();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			System.out.println("File not found : " + msg.getContent());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			System.out.println("Error reading file");
+		}
+
     }
 
 }
