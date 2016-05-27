@@ -38,6 +38,7 @@ public class MessageManagerBean implements MessageManagerRemote {
 		System.out.println("POST value for performative" + aclMessage.getPerformative());
 		
 		try {
+			//creating connection
 			Context context = new InitialContext();
 			ConnectionFactory cf = (ConnectionFactory) context
 					.lookup("java:jboss/exported/jms/RemoteConnectionFactory");
@@ -50,13 +51,14 @@ public class MessageManagerBean implements MessageManagerRemote {
 
 			connection.start();
 
+			//creating consumer
 			MessageConsumer consumer = session.createConsumer(queue);
-
-			//ACLMessage message = messageManager.setupMessage(name);
 			
+			//setuping message
 			ObjectMessage omsg = session.createObjectMessage();
 			omsg.setObject(aclMessage);
 		    
+			//posting message
 			MessageProducer producer = session.createProducer(queue);
 			producer.send(omsg);
 

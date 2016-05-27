@@ -6,7 +6,7 @@ import interfaces.Agent;
 
 public class SirAgent implements Agent, Serializable
 {
-	private AIDS aids;
+	protected AIDS aids;
 
 	public SirAgent(){}
 	

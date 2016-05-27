@@ -2,6 +2,7 @@ package model;
 
 import java.io.Serializable;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 
@@ -25,7 +26,7 @@ public class ACLMessage implements Serializable{
 	
 	private Object contentObject;
 	
-	private HashMap<String, Object> userArgs;
+	private Map<String, Object> userArgs;
 	
 	private String language;
 	
@@ -114,11 +115,11 @@ public class ACLMessage implements Serializable{
 		this.contentObject = contentObject;
 	}
 
-	public HashMap<String, Object> getUserArgs() {
+	public Map<String, Object> getUserArgs() {
 		return userArgs;
 	}
 
-	public void setUserArgs(HashMap<String, Object> userArgs) {
+	public void setUserArgs(Map<String, Object> userArgs) {
 		this.userArgs = userArgs;
 	}
 

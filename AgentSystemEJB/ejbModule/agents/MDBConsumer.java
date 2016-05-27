@@ -32,7 +32,6 @@ public class MDBConsumer implements MessageListener
 	
 	  public void onMessage (Message msg) {
 		    try {
-		      //TextMessage tmsg = (TextMessage) msg;
 		    	ObjectMessage omsg = (ObjectMessage) msg;
 		    	System.out.println("MDBConsumer value for performative " + ((ACLMessage)omsg.getObject()).getPerformative());
 		      try {
@@ -57,7 +56,7 @@ public class MDBConsumer implements MessageListener
 	   */
 	  private void msgToAgent(ACLMessage message) 
 	  {
-		  Agent currAgent = agentManager.getRunningAgents().get(message.getContent());
+		  Agent currAgent = agentManager.getRunningAgents().get(message.getSender().getName());
 		  
 		  if(currAgent != null)
 		  {
