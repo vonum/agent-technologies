@@ -238,13 +238,7 @@ public class AgentManagerBean implements AgentManagerRemote
 	@Override
 	public void sendACLMessage(ACLMessage acl) 
 	{
-
 		System.out.println(acl.getSender().getName());
-		
-		ResteasyClient client = new ResteasyClientBuilder().build();
-        ResteasyWebTarget target;
-		
-        
         
 		//ako su na istom serveru
 		if(acl.getReceivers()[0].getHost().getAlias().equals(node.getCurNode().getAlias()))
@@ -255,6 +249,10 @@ public class AgentManagerBean implements AgentManagerRemote
 		}
 		else 
 		{
+
+			ResteasyClient client = new ResteasyClientBuilder().build();
+	        ResteasyWebTarget target;
+	        
 			target = client.target("http://" + acl.getReceivers()[0].getHost().getAddress() + ":8080/AgentSystemClient/rest/agents/messages");
 		    target.request().post(Entity.entity(acl, MediaType.APPLICATION_JSON));
 		}
