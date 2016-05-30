@@ -196,7 +196,6 @@ public class AgentManagerBean implements AgentManagerRemote
     	System.out.println("Ime agenta kojeg izbacujemo: " + name);
     	//System.out.println(runningAgents.get(name).getAids().getName());
     	//remove agent from the map
-    	runningAgents.remove(name);
     	
     	if(!tmp)
     	{   
@@ -225,7 +224,8 @@ public class AgentManagerBean implements AgentManagerRemote
     		name = name.substring(0, name.length() - 1);
     	}
     	
-	    
+    	runningAgents.remove(name);
+    	allAgents.remove(name);
     	
 	    System.out.println("Posle " + runningAgents.size());
     	
