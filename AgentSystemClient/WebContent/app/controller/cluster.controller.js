@@ -34,6 +34,28 @@
 			console.log("Error loading bye");
 		});
 	}
+	
+	
+	//check if the node is master
+	$http.get('rest/node/master')
+		.success(function(d) {
+			console.log("IsMaster " + d);
+			$scope.masterAddr = d;
+			
+		})
+		.error(function(d) {
+			console.log("Error loading bye");
+		});
+		
+	// Are we registered
+	$http.get('rest/node/registered')
+		.success(function(d) {
+			$scope.isRegistered = d;
+			console.log($scope.isRegistered);
+		})
+		.error(function(d) {
+			console.log("Error loading bye");
+		});
 		
 	}
 	
