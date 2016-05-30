@@ -9,6 +9,8 @@ public interface MessageManagerRemote {
 
 	public void post(ACLMessage aclMessage);
 	
+	public void postToCenter(ACLMessage aclMessage);
+	
 	public ACLMessage setupMessage(String content);
 	
 }

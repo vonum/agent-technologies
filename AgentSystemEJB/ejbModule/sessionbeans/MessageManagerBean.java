@@ -84,4 +84,10 @@ public class MessageManagerBean implements MessageManagerRemote {
 		return message;
 	}
 
+	@Override
+	public void postToCenter(ACLMessage aclMessage) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

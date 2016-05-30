@@ -192,10 +192,9 @@ public class AgentManagerBean implements AgentManagerRemote
     	boolean tmp;
     	tmp = name.endsWith("*");
     	
-    	System.out.println("Pre: " + runningAgents.size());
+    	System.out.println("Pre: " + allAgents.size());
     	System.out.println("Ime agenta kojeg izbacujemo: " + name);
     	//System.out.println(runningAgents.get(name).getAids().getName());
-    	//remove agent from the map
     	
     	if(!tmp)
     	{   
@@ -224,10 +223,11 @@ public class AgentManagerBean implements AgentManagerRemote
     		name = name.substring(0, name.length() - 1);
     	}
     	
+       	//remove agent from the map
     	runningAgents.remove(name);
     	allAgents.remove(name);
     	
-	    System.out.println("Posle " + runningAgents.size());
+	    System.out.println("Posle " + allAgents.size());
     	
 		return "";
 	}
