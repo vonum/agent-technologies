@@ -253,7 +253,7 @@ public class AgentManagerBean implements AgentManagerRemote
 			ResteasyClient client = new ResteasyClientBuilder().build();
 	        ResteasyWebTarget target;
 	        
-			target = client.target("http://" + acl.getReceivers()[0].getHost().getAddress() + ":8080/AgentSystemClient/rest/agents/messages");
+			target = client.target("http://" + acl.getSender().getHost().getAddress() + ":8080/AgentSystemClient/rest/agents/messages");
 		    target.request().post(Entity.entity(acl, MediaType.APPLICATION_JSON));
 		}
 		
