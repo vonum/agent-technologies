@@ -1,5 +1,6 @@
 package sessionbeans;
 
+import javax.ejb.EJB;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.jms.Connection;
@@ -9,11 +10,17 @@ import javax.jms.MessageProducer;
 import javax.jms.ObjectMessage;
 import javax.jms.Queue;
 import javax.jms.Session;
-import javax.jms.TextMessage;
 import javax.naming.Context;
 import javax.naming.InitialContext;
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.core.MediaType;
+
+import org.jboss.resteasy.client.jaxrs.ResteasyClient;
+import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
+import org.jboss.resteasy.client.jaxrs.ResteasyWebTarget;
 
 import interfaces.MessageManagerRemote;
+import interfaces.NodeRemote;
 import model.ACLMessage;
 import model.Performative;
 
@@ -27,6 +34,10 @@ public class MessageManagerBean implements MessageManagerRemote {
     /**
      * Default constructor. 
      */
+	
+	@EJB
+	NodeRemote node;
+	
     public MessageManagerBean() {
         // TODO Auto-generated constructor stub
     }
@@ -37,38 +48,45 @@ public class MessageManagerBean implements MessageManagerRemote {
 		
 		System.out.println("POST value for performative" + aclMessage.getPerformative());
 		
-		try {
-			//creating connection
-			Context context = new InitialContext();
-			ConnectionFactory cf = (ConnectionFactory) context
-					.lookup("java:jboss/exported/jms/RemoteConnectionFactory");
-			final Queue queue = (Queue) context
-					.lookup("java:jboss/exported/jms/queue/mojQueue");
-			context.close();
-			Connection connection = cf.createConnection("guest", "guestguest");
-			final Session session = connection.createSession(false,
-					Session.AUTO_ACKNOWLEDGE);
-
-			connection.start();
-
-			//creating consumer
-			MessageConsumer consumer = session.createConsumer(queue);
-			
-			//setuping message
-			ObjectMessage omsg = session.createObjectMessage();
-			omsg.setObject(aclMessage);
-		    
-			//posting message
-			MessageProducer producer = session.createProducer(queue);
-			producer.send(omsg);
-
-			//session.close();
-			producer.close();
-			consumer.close();
-			connection.stop();
-		    
-		} catch (Exception ex) {
-			ex.printStackTrace();
+		if(aclMessage.getReceivers()[0].getHost().getAlias().equals(node.getCurNode().getAlias()))
+		{
+			try {
+				//creating connection
+				Context context = new InitialContext();
+				ConnectionFactory cf = (ConnectionFactory) context
+						.lookup("java:jboss/exported/jms/RemoteConnectionFactory");
+				final Queue queue = (Queue) context
+						.lookup("java:jboss/exported/jms/queue/mojQueue");
+				context.close();
+				Connection connection = cf.createConnection("guest", "guestguest");
+				final Session session = connection.createSession(false,
+						Session.AUTO_ACKNOWLEDGE);
+	
+				connection.start();
+	
+				//creating consumer
+				MessageConsumer consumer = session.createConsumer(queue);
+				
+				//setuping message
+				ObjectMessage omsg = session.createObjectMessage();
+				omsg.setObject(aclMessage);
+			    
+				//posting message
+				MessageProducer producer = session.createProducer(queue);
+				producer.send(omsg);
+	
+				//session.close();
+				producer.close();
+				consumer.close();
+				connection.stop();
+			    
+			} catch (Exception ex) {
+				ex.printStackTrace();
+			}
+		}
+		else
+		{
+			postToCenter(aclMessage);
 		}
 		
 	}
@@ -87,7 +105,11 @@ public class MessageManagerBean implements MessageManagerRemote {
 	@Override
 	public void postToCenter(ACLMessage aclMessage) {
 		// TODO Auto-generated method stub
-		
+		ResteasyClient client = new ResteasyClientBuilder().build();
+        ResteasyWebTarget target;
+        
+		target = client.target("http://" + aclMessage.getReceivers()[0].getHost().getAddress() + ":8080/AgentSystemClient/rest/agents/messages");
+	    target.request().post(Entity.entity(aclMessage, MediaType.APPLICATION_JSON));
 	}
 
 }
