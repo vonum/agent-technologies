@@ -6,10 +6,10 @@ import java.util.Map;
 import javax.ejb.Remote;
 
 import model.ACLMessage;
+import model.AIDS;
 import model.AgentType;
 import model.AgentWrapper;
 import model.Performative;
-import model.SirAgent;
 
 @Remote
 public interface AgentManagerRemote 
@@ -30,7 +30,7 @@ public interface AgentManagerRemote
 	public String startAgent(AgentWrapper rapper);
 	
 	//dodaj pokrenutog agenta u listu pokrenutih agenata
-	public void addRunningAgent(Agent agent);
+	public void addRunningAgent(AIDS agent);
 	
 	//zaustavimo odredjenog agenta
 	public String stopAgent(String name);
@@ -46,5 +46,7 @@ public interface AgentManagerRemote
 	public void setTypes(Map<String, AgentType> types);
 	
 	public Map<String, Agent> getRunningAgents();
+	
+	public Map<String, AIDS> allAgents(); 
 	
 }

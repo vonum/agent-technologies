@@ -51,6 +51,7 @@ public class AgentManagerBean implements AgentManagerRemote
 	private Map<String, AgentType> types;
 	
 	private  Map<String, Agent> runningAgents;
+	private Map<String, AIDS> allAgents;
 	
 	@EJB
 	NodeRemote node;
@@ -104,6 +105,15 @@ public class AgentManagerBean implements AgentManagerRemote
 		return runningAgents;
 	}
     
+    @GET
+    @Path("/all")
+    @Produces(MediaType.APPLICATION_JSON)
+	@Override
+	public Map<String, AIDS> allAgents() 
+	{
+		return allAgents;
+	}
+    
     @POST
     @Path("/running")
     @Consumes(MediaType.APPLICATION_JSON)
@@ -117,9 +127,9 @@ public class AgentManagerBean implements AgentManagerRemote
     @Path("/agent")
     @Consumes(MediaType.APPLICATION_JSON)
     @Override
-    public void addRunningAgent(Agent agent)
+    public void addRunningAgent(AIDS agent)
     {	
-    	this.runningAgents.put(agent.getAids().getName(), agent);
+    	this.allAgents.put(agent.getName(), agent);
     }
 
     @PUT
@@ -146,6 +156,7 @@ public class AgentManagerBean implements AgentManagerRemote
 		
 		//dodamo agenta u listu pokrenutih
 		runningAgents.put(agent.getAids().getName(), agent);
+		allAgents.put(agent.getAids().getName(), agent.getAids());
     	
         ResteasyClient client = new ResteasyClientBuilder().build();
         ResteasyWebTarget target;
@@ -154,7 +165,7 @@ public class AgentManagerBean implements AgentManagerRemote
 		if(!node.getCurNode().getAlias().equals("master"))
 		{
 	        target = client.target("http://" + node.getMaster().getAddress() + ":8080/AgentSystemClient/rest/agents/agent");
-	        target.request().post(Entity.entity(agent, MediaType.APPLICATION_JSON));
+	        target.request().post(Entity.entity(agent.getAids(), MediaType.APPLICATION_JSON));
 		}
 		
         //javimo svim ostalim cvorovima da dodaju pokrenutog agenta
@@ -163,7 +174,7 @@ public class AgentManagerBean implements AgentManagerRemote
     		if(!center.getAlias().equals(node.getCurNode().getAlias()))
     		{
     	        target = client.target("http://" + center.getAddress() + ":8080/AgentSystemClient/rest/agents/agent");
-    	        target.request().post(Entity.entity(agent, MediaType.APPLICATION_JSON));
+    	        target.request().post(Entity.entity(agent.getAids(), MediaType.APPLICATION_JSON));
     		}
     	}
     	
