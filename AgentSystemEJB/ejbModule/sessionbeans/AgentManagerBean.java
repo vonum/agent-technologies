@@ -240,8 +240,24 @@ public class AgentManagerBean implements AgentManagerRemote
 	{
 
 		System.out.println(acl.getSender().getName());
-		//setup acl message and post it
-		messageManager.post(acl);
+		
+		ResteasyClient client = new ResteasyClientBuilder().build();
+        ResteasyWebTarget target;
+		
+        
+        
+		//ako su na istom serveru
+		if(acl.getReceivers()[0].getHost().getAlias().equals(node.getCurNode().getAlias()))
+		{
+			//setup acl message and post it
+			messageManager.post(acl);
+		}
+		else 
+		{
+			target = client.target("http://" + acl.getReceivers()[0].getHost().getAddress() + ":8080/AgentSystemClient/rest/agents/message");
+		    target.request().post(Entity.entity(acl, MediaType.APPLICATION_JSON));
+		}
+		
 	}
 
 	@GET
