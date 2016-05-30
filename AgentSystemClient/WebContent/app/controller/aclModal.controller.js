@@ -25,7 +25,7 @@
 		//from map of agents to array of agents
 		$scope.agents = [];
 		for(var prop in getRunningAgents) {
-			$scope.agents.push(getRunningAgents[prop].aids);
+			$scope.agents.push(getRunningAgents[prop]);
 		}
 		
 		//SELECT FOR PERFORMATIVE

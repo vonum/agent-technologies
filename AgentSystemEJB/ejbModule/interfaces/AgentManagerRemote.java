@@ -24,7 +24,7 @@ public interface AgentManagerRemote
 	public  Map<String, Agent> runningAgents();
 	
 	//kada se podigne cvor, dobije listu pokrenutih agenata
-	public void setRunningAgents(Map<String, Agent> agents);
+	public void setRunningAgents(Map<String, AIDS> agents);
 	
 	//pokrenemo agent, zadamo mu kojeg je tipa i njegovo ime
 	public String startAgent(AgentWrapper rapper);
@@ -48,5 +48,7 @@ public interface AgentManagerRemote
 	public Map<String, Agent> getRunningAgents();
 	
 	public Map<String, AIDS> allAgents(); 
+	
+	public Map<String, AIDS> getAllAgents();
 	
 }

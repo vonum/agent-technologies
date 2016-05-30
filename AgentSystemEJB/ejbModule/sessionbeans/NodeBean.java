@@ -59,7 +59,7 @@ public class NodeBean implements NodeRemote{
     public NodeBean() {
         // TODO Auto-generated constructor stub
     	master = new AgentCenter("192.168.0.15", "master");
-    	curNode = master;
+    	curNode = new AgentCenter("192.168.0.14", "mulan");;
     	centers = new HashMap<String, AgentCenter>();
     	registered = false;
     	//centers.put(master.getAlias(), master);
@@ -134,7 +134,7 @@ public class NodeBean implements NodeRemote{
     			
     			//6. master cvor dostavlja listu pokrenutih agenata novom cvoru
     			target = client.target("http://" + center.getAddress() + ":8080/AgentSystemClient/rest/agents/running");
-    			target.request().post(Entity.entity(agentManager.getRunningAgents(), MediaType.APPLICATION_JSON));
+    			target.request().post(Entity.entity(agentManager.getAllAgents(), MediaType.APPLICATION_JSON));
     			
     			//7. na kraju vrati listu cvorova novom cvoru 
     			return new ArrayList(centers.values());

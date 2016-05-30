@@ -119,9 +119,9 @@ public class AgentManagerBean implements AgentManagerRemote
     @Path("/running")
     @Consumes(MediaType.APPLICATION_JSON)
 	@Override
-	public void setRunningAgents(Map<String, Agent> agents) {
+	public void setRunningAgents(Map<String, AIDS> agents) {
 		// TODO Auto-generated method stub
-		this.runningAgents = (Map<String, Agent>) agents;
+		this.allAgents = (Map<String, AIDS>) agents;
 	}
     
     @POST
@@ -268,6 +268,10 @@ public class AgentManagerBean implements AgentManagerRemote
 		return this.runningAgents;
 	}
 
-
+	@Override
+	public Map<String, AIDS> getAllAgents() {
+		// TODO Auto-generated method stub
+		return this.allAgents;
+	}
     
 }
