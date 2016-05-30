@@ -26,10 +26,9 @@ import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
 import org.jboss.resteasy.client.jaxrs.ResteasyWebTarget;
 
 import agents.AgentLoader;
-import agents.PingAgent;
-import agents.PongAgent;
 import interfaces.Agent;
 import interfaces.AgentManagerRemote;
+import interfaces.MessageLoggerRemote;
 import interfaces.MessageManagerRemote;
 import interfaces.NodeRemote;
 import model.ACLMessage;
@@ -38,7 +37,6 @@ import model.AgentCenter;
 import model.AgentType;
 import model.AgentWrapper;
 import model.Performative;
-import model.SirAgent;
 import util.Utility;
 
 
@@ -55,6 +53,9 @@ public class AgentManagerBean implements AgentManagerRemote
 	
 	@EJB
 	NodeRemote node;
+	
+	@EJB
+	MessageLoggerRemote logger;
 	
 	@EJB
 	MessageManagerRemote messageManager;
@@ -131,6 +132,9 @@ public class AgentManagerBean implements AgentManagerRemote
     public void addRunningAgent(AIDS agent)
     {	
     	this.allAgents.put(agent.getName(), agent);
+    	
+    	logger.logMessage("Agent added gud gud");
+    	
     }
 
     @PUT

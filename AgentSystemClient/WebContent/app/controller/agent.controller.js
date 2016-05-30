@@ -1,9 +1,9 @@
 (function() {
 	angular.module("agentApp").controller("agentController", agentController);
 		
-	agentController.$inject = ["$http", "$scope", "$uibModal"];
+	agentController.$inject = ["$http", "$scope", "$uibModal", "$interval"];
 	
-	function agentController($http, $scope, $uibModal) {
+	function agentController($http, $scope, $uibModal, $interval) {
 
 		
 		$scope.startAgent = function(type, module) {
@@ -97,10 +97,33 @@
 				console.log("Error loading running agents");
 			});
 		}
-		
 		runningAgents();
-
 		
+		
+		
+		//Update console output
+		
+		$scope.logMessages = [];
+		
+		$scope.updateConsole = function() {
+//			$http.get('rest/logger/messages/' + 2)
+//			.success(function(d) {
+//				
+//				//for each new msg push
+//				angular.forEach(d, function(v, k) {
+//					$scope.logMessages.push(v);
+//				});
+//				
+//			})
+//			.error(function(d) {
+//				console.log("Error loading log messages");
+//			});
+		}
+
+		//update console every  6 second
+		$interval(function() {
+			$scope.updateConsole();
+		}, 6000);
 	}
 	
 })();
