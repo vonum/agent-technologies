@@ -251,10 +251,11 @@ public class AgentManagerBean implements AgentManagerRemote
 		{
 			//setup acl message and post it
 			messageManager.post(acl);
+			System.out.println("ekval");
 		}
 		else 
 		{
-			target = client.target("http://" + acl.getReceivers()[0].getHost().getAddress() + ":8080/AgentSystemClient/rest/agents/message");
+			target = client.target("http://" + acl.getReceivers()[0].getHost().getAddress() + ":8080/AgentSystemClient/rest/agents/messages");
 		    target.request().post(Entity.entity(acl, MediaType.APPLICATION_JSON));
 		}
 		

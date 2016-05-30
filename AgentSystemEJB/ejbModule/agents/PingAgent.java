@@ -51,6 +51,8 @@ public class PingAgent extends SirAgent
 				recieverAIDS.setName(msg.getContent());
 				recieverAIDS.setType(recieverType);
 				
+				System.out.println("Kontara " + msg.getContent());
+				
 				//message to post
 				ACLMessage message = new ACLMessage();
 				message.setPerformative(Performative.REQUEST);
