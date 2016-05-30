@@ -29,7 +29,6 @@ import interfaces.AgentManagerRemote;
 import interfaces.NodeRemote;
 import model.AgentCenter;
 import model.AgentType;
-import util.Utility;
 
 /**
  * Session Bean implementation class NodeBean
@@ -47,6 +46,7 @@ public class NodeBean implements NodeRemote{
 
 	private AgentCenter master;
 	private AgentCenter curNode;
+	private boolean registered;
 	
 	private Map<String, AgentCenter> centers;
 	//private Map<String, AgentType> types;
@@ -61,6 +61,7 @@ public class NodeBean implements NodeRemote{
     	master = new AgentCenter("192.168.0.15", "master");
     	curNode = master;
     	centers = new HashMap<String, AgentCenter>();
+    	registered = false;
     	//centers.put(master.getAlias(), master);
     }
 
@@ -177,6 +178,7 @@ public class NodeBean implements NodeRemote{
 	                    centers.put((String)map.get("alias"), new AgentCenter((String)map.get("address"), (String)map.get("alias")));
 	                }
 	            }
+	            registered = true;
 	            return "true";
 	        }
 	        return "false";
@@ -250,4 +252,27 @@ public class NodeBean implements NodeRemote{
 		return centers;
 	}
 
+	@GET
+	@Path("/registered")
+	@Override
+	public String isRegistered() {
+		// TODO Auto-generated method stub
+		return registered ? "true" : "false";
+	}
+	
+	@GET
+	@Path("/master")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Override
+	public AgentCenter isMaster()
+	{
+		if(curNode.getAlias().equals(master.getAlias()))
+		{
+			return null;
+		}
+		else
+		{
+			return master;
+		}
+	}
 }

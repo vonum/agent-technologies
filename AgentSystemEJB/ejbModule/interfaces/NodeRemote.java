@@ -11,8 +11,6 @@ public interface NodeRemote {
 
 	public Object registerAgentCenter(AgentCenter center);
 	
-	//public String registerExistingAgentCenters(List<AgentCenter> centers);
-	
 	public String unregisterAgentCenter(String alias);
 	
 	public String hiMaster();
@@ -24,5 +22,9 @@ public interface NodeRemote {
 	public AgentCenter getCurNode();
 	
 	public Map<String, AgentCenter> getCenters();
+	
+	public String isRegistered();
+	
+	public AgentCenter isMaster();
 	
 }
