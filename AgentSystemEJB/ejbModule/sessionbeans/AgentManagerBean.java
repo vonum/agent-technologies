@@ -241,7 +241,7 @@ public class AgentManagerBean implements AgentManagerRemote
 		System.out.println(acl.getSender().getName());
         
 		//ako su na istom serveru
-		if(acl.getReceivers()[0].getHost().getAlias().equals(node.getCurNode().getAlias()))
+		if(acl.getSender().getHost().getAlias().equals(node.getCurNode().getAlias()))
 		{
 			//setup acl message and post it
 			messageManager.post(acl);

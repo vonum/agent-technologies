@@ -48,8 +48,9 @@ public class MessageManagerBean implements MessageManagerRemote {
 		
 		System.out.println("POST value for performative" + aclMessage.getPerformative());
 		
-		if(aclMessage.getReceivers()[0].getHost().getAlias().equals(node.getCurNode().getAlias()))
+		if(aclMessage.getSender().getHost().getAlias().equals(node.getCurNode().getAlias()))
 		{
+			System.out.println("saljemo queue");
 			try {
 				//creating connection
 				Context context = new InitialContext();
@@ -86,6 +87,7 @@ public class MessageManagerBean implements MessageManagerRemote {
 		}
 		else
 		{
+			System.out.println("saljemo rest");
 			postToCenter(aclMessage);
 		}
 		
@@ -108,7 +110,7 @@ public class MessageManagerBean implements MessageManagerRemote {
 		ResteasyClient client = new ResteasyClientBuilder().build();
         ResteasyWebTarget target;
         
-		target = client.target("http://" + aclMessage.getReceivers()[0].getHost().getAddress() + ":8080/AgentSystemClient/rest/agents/messages");
+		target = client.target("http://" + aclMessage.getSender().getHost().getAddress() + ":8080/AgentSystemClient/rest/agents/messages");
 	    target.request().post(Entity.entity(aclMessage, MediaType.APPLICATION_JSON));
 	}
 

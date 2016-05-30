@@ -33,8 +33,6 @@ public class PingAgent extends SirAgent
 	public void handleMessage(ACLMessage msg)
 	{
 		System.out.println("Ping got hit son!");
-
-		System.out.println("WUT");
 		
 		System.out.println(msg.getPerformative());
 		
@@ -50,6 +48,7 @@ public class PingAgent extends SirAgent
 				AIDS recieverAIDS = new AIDS();
 				recieverAIDS.setName(msg.getContent());
 				recieverAIDS.setType(recieverType);
+				recieverAIDS.setHost(msg.getReceivers()[0].getHost());
 				
 				System.out.println("Kontara " + msg.getContent());
 				
