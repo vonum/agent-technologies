@@ -29,6 +29,7 @@
 		$http.get('rest/node/bye')
 		.success(function(d) {
 			alert("izi");
+			$scope.isRegistered = false;
 		})
 		.error(function(d) {
 			console.log("Error loading bye");

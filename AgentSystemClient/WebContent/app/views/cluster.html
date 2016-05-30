@@ -1,12 +1,12 @@
 <div class="container">
 
 	
-	<button class="btn btn-success" ng-click="register()" ng-if="isRegistered == false">Register</button>
+	<button class="btn btn-success" ng-click="register()" ng-if="isRegistered == false && masterAddr != ''">Register</button>
 	<button class="btn btn-success" ng-click="unregister()"  ng-if="isRegistered == true">Unregister</button>
 
 	<h4 ng-if="masterAddr == ''">You are the master, you are our leader</h4>
 	
-	<h4 ng-if="masterAddr != ''">Master ip: {{ masterAddr}}</h4>
+	<h4 ng-if="masterAddr != ''">Master ip: {{ masterAddr.address }}</h4>
 
 	<div class="col-md-6">
 		<h3>Nodes</h3>
