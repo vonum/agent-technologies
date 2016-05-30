@@ -88,7 +88,7 @@
 		
 		//load running agents
 		function runningAgents() {
-			$http.get('rest/agents/running')
+			$http.get('rest/agents/all')
 			.success(function(d) {
 				console.log(d);
 				$scope.runningAgents = d;

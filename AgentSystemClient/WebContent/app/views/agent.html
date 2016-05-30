@@ -16,9 +16,9 @@
 	    </thead>
 	    <tbody>
 	      <tr class="success" ng-repeat="agent in runningAgents">
-	        <td>{{ agent.aids.name}}</td>
-	        <td>{{ agent.aids.type.name}}</td>
-	        <td>{{ agent.aids.host.alias}}</td>
+	        <td>{{ agent.name}}</td>
+	        <td>{{ agent.type.name}}</td>
+	        <td>{{ agent.host.alias}}</td>
 	        <td><button class="btn btn-danger" ng-click="stopAgent(agent.aids)">Stop</button></td>
 	      </tr>
 	

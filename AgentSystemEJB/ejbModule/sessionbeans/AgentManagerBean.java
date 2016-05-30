@@ -63,6 +63,7 @@ public class AgentManagerBean implements AgentManagerRemote
 	{
 		types = new HashMap<String, AgentType>();
 		runningAgents = new  HashMap<String, Agent>();
+		allAgents = new HashMap<String, AIDS>();
 	}
 	
 	@PostConstruct

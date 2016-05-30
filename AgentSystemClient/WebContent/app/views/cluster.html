@@ -1,1 +1,25 @@
-<h1>Cluster stuff</h1>
+<div class="container">
+
+	<button class="btn btn-success" ng-click="register()" >Register</button>
+	<button class="btn btn-success" ng-click="unregister()" >Unregister</button>
+
+	<div class="col-md-6">
+		<h3>Nodes</h3>
+		<table class="table">
+	    <thead>
+	      <tr>
+	        <th>Address</th>
+	         <th>Alias</th>
+	      </tr>
+	    </thead>
+	    <tbody>
+	      <tr class="success" ng-repeat="node in nodes">
+	        <td>{{ node.address}}</td>
+	        <td>{{ node.alias}}</td>
+	      </tr>
+	
+	   
+	    </tbody>
+	  </table>
+  </div>
+ </div>

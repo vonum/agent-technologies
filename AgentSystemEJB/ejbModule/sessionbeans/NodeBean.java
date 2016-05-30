@@ -59,7 +59,7 @@ public class NodeBean implements NodeRemote{
     public NodeBean() {
         // TODO Auto-generated constructor stub
     	master = new AgentCenter("192.168.0.15", "master");
-    	curNode = new AgentCenter("192.168.0.14", "milan");
+    	curNode = master;
     	centers = new HashMap<String, AgentCenter>();
     	//centers.put(master.getAlias(), master);
     }
@@ -177,13 +177,13 @@ public class NodeBean implements NodeRemote{
 	                    centers.put((String)map.get("alias"), new AgentCenter((String)map.get("address"), (String)map.get("alias")));
 	                }
 	            }
-	            return "success";
+	            return "true";
 	        }
-	        return "error";
+	        return "false";
         }
         else
         {
-        	return "master pls";
+        	return "false";
         }
 	}
 
@@ -210,7 +210,7 @@ public class NodeBean implements NodeRemote{
 			centers.remove(alias);
 		}
 		
-		return "success";
+		return "true";
 
 	}
 
