@@ -63,16 +63,6 @@ public class MessageLoggerBean implements MessageLoggerRemote
 		return null;
 	}
 	
-	@GET
-	@Path("/count")
-	@Produces(MediaType.TEXT_PLAIN)
-	@Override
-	public String getMessageCount()
-	{
-		return String.valueOf(msgList.size());
-	}
-	
-	
 	/**
 	 *  Adds new messages to the list to send to users, subList wasn't working
 	 */
