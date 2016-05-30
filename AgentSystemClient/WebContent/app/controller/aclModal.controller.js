@@ -69,9 +69,11 @@
 			$scope.aclMsg.receivers.push($scope.currReceiver);
 			$scope.aclMsg.replyTo = $scope.currReplayTo;
 			
-			console.log($scope.aclMsg);
+			console.log($scope.currReceiver);
 			
-			$http.post('rest/agents/messages/', $scope.aclMsg)
+			var url = "http://" + $scope.currReceiver.host.address + ":8080/AgentSystemClient/"
+			
+			$http.post(url + 'rest/agents/messages/', $scope.aclMsg)
 			.success(function(d) {
 				$scope.cancel();
 			})
