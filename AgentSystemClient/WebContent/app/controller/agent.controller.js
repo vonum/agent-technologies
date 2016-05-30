@@ -106,24 +106,27 @@
 		$scope.logMessages = [];
 		
 		$scope.updateConsole = function() {
-//			$http.get('rest/logger/messages/' + 2)
-//			.success(function(d) {
-//				
-//				//for each new msg push
-//				angular.forEach(d, function(v, k) {
-//					$scope.logMessages.push(v);
-//				});
-//				
-//			})
-//			.error(function(d) {
-//				console.log("Error loading log messages");
-//			});
+			
+			var count = $scope.logMessages.length;
+			
+			$http.get('rest/logger/messages/' + count)
+			.success(function(d) {
+				
+				//for each new msg push
+				angular.forEach(d, function(v, k) {
+					$scope.logMessages.push(v);
+				});
+				
+			})
+			.error(function(d) {
+				console.log("Error loading log messages");
+			});
 		}
 
-		//update console every  6 second
+		//update console every  1 second
 		$interval(function() {
 			$scope.updateConsole();
-		}, 6000);
+		}, 1000);
 	}
 	
 })();

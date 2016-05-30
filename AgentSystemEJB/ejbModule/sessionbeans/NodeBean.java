@@ -58,8 +58,8 @@ public class NodeBean implements NodeRemote{
      */
     public NodeBean() {
         // TODO Auto-generated constructor stub
-    	master = new AgentCenter("192.168.90.63", "master");
-    	curNode = new AgentCenter("192.168.55.15", "pls");
+    	master = new AgentCenter("localhost", "master");
+    	curNode = master;
     	centers = new HashMap<String, AgentCenter>();
     	registered = false;
     	//centers.put(master.getAlias(), master);

@@ -3,7 +3,7 @@ package sessionbeans;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.ejb.LocalBean;
+import javax.ejb.Remote;
 import javax.ejb.Singleton;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -14,7 +14,7 @@ import javax.ws.rs.core.MediaType;
 import interfaces.MessageLoggerRemote;
 
 @Singleton
-@LocalBean
+@Remote
 @Path("/logger")
 public class MessageLoggerBean implements MessageLoggerRemote
 {
@@ -31,6 +31,7 @@ public class MessageLoggerBean implements MessageLoggerRemote
     public void logMessage(String msg)
     {
     	msgList.add(msg);
+    	System.out.println("Added to msg list");
     }
     
 	@GET
@@ -44,7 +45,19 @@ public class MessageLoggerBean implements MessageLoggerRemote
 		//if the list size on the fronted doesn't match the one on the server
 		if(cnt !=  msgList.size())
 		{
-			return msgList.subList(cnt - 1, msgList.size() - 1);
+			//if the list is empty
+			if(cnt == 0)
+			{
+				return msgList;
+			}
+			else
+			{
+				int lowerBound = cnt;
+				int upperBound = msgList.size();
+				
+				return getNewMessages(lowerBound, upperBound);
+			}
+			
 		}
 		
 		return null;
@@ -57,6 +70,22 @@ public class MessageLoggerBean implements MessageLoggerRemote
 	public String getMessageCount()
 	{
 		return String.valueOf(msgList.size());
+	}
+	
+	
+	/**
+	 *  Adds new messages to the list to send to users, subList wasn't working
+	 */
+	private ArrayList<String> getNewMessages(int lowerBound, int upperBound)
+	{
+		ArrayList<String> newMessages =  new ArrayList<String>();
+		
+		for(int i = lowerBound; i < upperBound;++i)
+		{
+			newMessages.add(msgList.get(i));
+		}
+		
+		return newMessages;
 	}
 	
 }

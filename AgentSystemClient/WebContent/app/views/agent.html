@@ -56,8 +56,8 @@
   <footer class="navbar-fixed-bottom">
   	<div class="class="well">
 	  <ul>
-	  	<li ng-repeat="msg in logMessages">
-	   		{{ msg }}
+	  	<li ng-repeat="msg in logMessages track by $index">
+	   		{{ msg }} 
 	  	</li>
 	  	
 	  </ul>

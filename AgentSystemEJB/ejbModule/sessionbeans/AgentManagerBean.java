@@ -133,8 +133,6 @@ public class AgentManagerBean implements AgentManagerRemote
     {	
     	this.allAgents.put(agent.getName(), agent);
     	
-    	logger.logMessage("Agent added gud gud");
-    	
     }
 
     @PUT
@@ -165,6 +163,8 @@ public class AgentManagerBean implements AgentManagerRemote
     	
         ResteasyClient client = new ResteasyClientBuilder().build();
         ResteasyWebTarget target;
+        
+      	logger.logMessage("Added new " + agentType + " - " + rapper.getName());
 		
 		//javimo masteru da doda pokrenutog agenta, ako nije master
 		if(!node.getCurNode().getAlias().equals("master"))
