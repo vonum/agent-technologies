@@ -1,10 +1,13 @@
 package agents;
 
+import java.util.Map.Entry;
+
 import javax.ejb.EJB;
 import javax.ejb.Remote;
 import javax.ejb.Stateful;
 
 import interfaces.Agent;
+import interfaces.MessageLoggerRemote;
 import interfaces.MessageManagerRemote;
 import model.ACLMessage;
 import model.AIDS;
@@ -20,6 +23,9 @@ public class PingAgent extends SirAgent
 	@EJB
 	MessageManagerRemote messageManager;
 	
+	@EJB
+	MessageLoggerRemote logger;
+	
 	public void init(AIDS aids)
 	{
 		
@@ -32,25 +38,27 @@ public class PingAgent extends SirAgent
 	
 	public void handleMessage(ACLMessage msg)
 	{
-		System.out.println("Ping got hit son!");
-		
-		System.out.println(msg.getPerformative());
 		
 		switch(msg.getPerformative())
 		{
 			case REQUEST:
-			{
-				System.out.println("REQUEST");
+			{				
+				System.out.println("Handling message for ping agent " + msg.getSender().getName());
+				System.out.println("Content : " + msg.getContent());
+				System.out.println("Performative : " + msg.getPerformative());
+				
+				logger.logMessage("Ping " + aids.getName() + " activated");
+				logger.logMessage("Sending message to " + msg.getReceivers()[0].getName() + ", on node " + msg.getReceivers()[0].getHost().getAddress());
+				
+				
 				//Reciever type
 				AgentType recieverType = new AgentType(PongAgent.class.getSimpleName(), "w/e");
 				
 				//Reciever ID
 				AIDS recieverAIDS = new AIDS();
-				recieverAIDS.setName(msg.getContent());
+				recieverAIDS.setName(msg.getReceivers()[0].getName());
 				recieverAIDS.setType(recieverType);
 				recieverAIDS.setHost(msg.getReceivers()[0].getHost());
-				
-				System.out.println("Kontara " + msg.getContent());
 				
 				//message to post
 				ACLMessage message = new ACLMessage();
@@ -65,8 +73,19 @@ public class PingAgent extends SirAgent
 			
 			case INFORM:
 			{
-				System.out.println("INFORM");
-				System.out.println(msg.getUserArgs().size());
+				System.out.println("Handling message for ping agent " + msg.getSender().getName());
+				System.out.println("Content : " + msg.getContent());
+				System.out.println("Performative : " + msg.getPerformative());
+				
+				for(Entry<String, Object> e : msg.getUserArgs().entrySet())
+				{
+					logger.logMessage(e.getKey() + e.getValue());
+				}
+				
+				logger.logMessage("Ping reactivated on : " + aids.getHost().getAddress());
+				logger.logMessage("Ping reactivated : " + aids.getName());
+				
+				//System.out.println(msg.getUserArgs().size());
 			}
 			break;
 			

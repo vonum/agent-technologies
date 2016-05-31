@@ -2,12 +2,14 @@ package agents;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import javax.ejb.EJB;
 import javax.ejb.Remote;
 import javax.ejb.Stateful;
 
 import interfaces.Agent;
+import interfaces.MessageLoggerRemote;
 import interfaces.MessageManagerRemote;
 import interfaces.NodeRemote;
 import model.ACLMessage;
@@ -29,8 +31,12 @@ public class PongAgent extends SirAgent
 	
 	@EJB
 	NodeRemote center;
+	
 	@EJB
 	MessageManagerRemote messageManager;
+	
+	@EJB
+	MessageLoggerRemote logger;
 	
 	public void init(AIDS aids)
 	{
@@ -44,17 +50,15 @@ public class PongAgent extends SirAgent
 	
 	public void handleMessage(ACLMessage msg)
 	{
-		System.out.println("PongAgent got hit son!");
-		System.out.println(++counter);
-		System.out.println(this.hashCode());
-		System.out.println(center.getCurNode().getAlias() != null);
 		
 		ACLMessage reply = new ACLMessage();
-		Map<String, Object> userArgs = new HashMap();
+		Map<String, Object> userArgs = new HashMap<String, Object>();
 		
-		userArgs.put("pongCreatedOn", center.getCurNode().getAlias());
-		userArgs.put("pongWorkingOn", center.getCurNode().getAlias());
-		userArgs.put("pongCounter", ++counter);
+		userArgs.put("Pong activated : ", aids.getName());
+		userArgs.put("Pong activated by : ", msg.getReceivers()[0].getName());
+		userArgs.put("Pong activated on : ", msg.getReceivers()[0].getHost().getAddress());
+		userArgs.put("Pong working on : ", center.getCurNode().getAddress());
+		userArgs.put("Pong counter : ", ++counter);
 		
 		reply.setPerformative(Performative.INFORM);
 		reply.setUserArgs(userArgs);

@@ -49,7 +49,6 @@ public class NodeBean implements NodeRemote{
 	private boolean registered;
 	
 	private Map<String, AgentCenter> centers;
-	//private Map<String, AgentType> types;
 	
 	@EJB
 	AgentManagerRemote agentManager;
@@ -58,21 +57,17 @@ public class NodeBean implements NodeRemote{
      */
     public NodeBean() {
         // TODO Auto-generated constructor stub
-    	master = new AgentCenter("localhost", "master");
+    	master = new AgentCenter("192.168.0.14", "master");
     	curNode = master;
     	centers = new HashMap<String, AgentCenter>();
     	registered = false;
-    	//centers.put(master.getAlias(), master);
     }
 
 	@PostConstruct
     public void init()
     {
-    	System.out.println("NAPRAVLJENI SMO FAK JEA");
     	System.out.println("Working Directory = " +
                 System.getProperty("user.dir"));
-    	//types = agentManager.agentTypes();
-    	//System.out.println(types.size());
     }
 
     @POST

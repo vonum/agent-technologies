@@ -50,7 +50,7 @@ public class MessageManagerBean implements MessageManagerRemote {
 		
 		if(aclMessage.getSender().getHost().getAlias().equals(node.getCurNode().getAlias()))
 		{
-			System.out.println("saljemo queue");
+			System.out.println("MsgManager : reciever on the same node, sending message through queue");
 			try {
 				//creating connection
 				Context context = new InitialContext();
@@ -87,7 +87,7 @@ public class MessageManagerBean implements MessageManagerRemote {
 		}
 		else
 		{
-			System.out.println("saljemo rest");
+			System.out.println("MsgManager : reciever not on same queue, sending acl to other node");
 			postToCenter(aclMessage);
 		}
 		

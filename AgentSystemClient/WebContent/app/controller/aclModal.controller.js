@@ -71,7 +71,7 @@
 			
 			console.log($scope.currReceiver);
 			
-			var url = "http://" + $scope.currReceiver.host.address + ":8080/AgentSystemClient/"
+			//var url = "http://" + $scope.currReceiver.host.address + ":8080/AgentSystemClient/"
 			
 			$http.post('rest/agents/messages/', $scope.aclMsg)
 			.success(function(d) {

@@ -33,12 +33,12 @@ public class MDBConsumer implements MessageListener
 	  public void onMessage (Message msg) {
 		    try {
 		    	ObjectMessage omsg = (ObjectMessage) msg;
-		    	System.out.println("MDBConsumer value for performative " + ((ACLMessage)omsg.getObject()).getPerformative());
+		    	System.out.println("MDB performative: " + ((ACLMessage)omsg.getObject()).getPerformative());
 		      try {
 		    	  //za sad je samo ime, posle cemo ceo AClMessage objekat dobijati
 		          ACLMessage message = (ACLMessage) omsg.getObject();
 
-		          System.out.println("Received the name from the client: " + message.getContent() );
+		          System.out.println("MDB message content: " + message.getContent() );
 		          
 		          msgToAgent(message);
 		          

@@ -91,7 +91,6 @@ public class AgentManagerBean implements AgentManagerRemote
     @Override
     public String addTypes(Map<String, AgentType> types)
     {
-    	System.out.println("we are here");
     	System.out.println(types.getClass());
     	this.types = types;
     	
@@ -242,7 +241,7 @@ public class AgentManagerBean implements AgentManagerRemote
 	@Override
 	public void sendACLMessage(ACLMessage acl) 
 	{
-		System.out.println(acl.getSender().getName());
+		System.out.println("Sender name : " + acl.getSender().getName());
         
 		//ako su na istom serveru
 		if(acl.getSender().getHost().getAlias().equals(node.getCurNode().getAlias()))
