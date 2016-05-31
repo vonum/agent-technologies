@@ -92,7 +92,7 @@ public class MapAgent extends SirAgent {
 
 		for(Entry<Character, Integer> e : occur.entrySet())
 		{
-			logger.logMessage(e.getKey() + " : " + e.getValue());
+			logger.logMessage(msg.getContent() + " : " + e.getKey() + " : " + e.getValue());
 		}
     }
 

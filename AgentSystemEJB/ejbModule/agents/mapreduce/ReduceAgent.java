@@ -72,14 +72,15 @@ public class ReduceAgent extends SirAgent{
     			System.out.println("File " + listOfFiles[i].getName());
     			Agent agent = loader.startAgent(new AgentType("MapAgent", "pls"), "");
     			
-    			/*AIDS agentAIDS = new AIDS();
-    			agentAIDS.setName("map" + Integer.toString(nameGenerator++));
+    			AIDS agentAIDS = new AIDS();
+    			agentAIDS.setName(aids.getName() + "Slave" + Integer.toString(nameGenerator++));
     			agentAIDS.setType(new AgentType("MapAgent", "pls"));
     			agentAIDS.setHost(center.getCurNode());
     			
-    			agent.setAids(agentAIDS);*/
+    			agent.setAids(agentAIDS);
     			ACLMessage message = new ACLMessage();
     			message.setContent(msg.getContent() + "\\" + listOfFiles[i].getName());
+    			message.setSender(agentAIDS);
     			agent.handleMessage(message);
     			
     	    } else if (listOfFiles[i].isDirectory()) {

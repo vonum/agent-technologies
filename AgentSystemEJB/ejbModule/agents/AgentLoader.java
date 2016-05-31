@@ -17,14 +17,10 @@ import model.SirAgent;
  */
 public class AgentLoader 
 {
-
-	 //ArrayList<SirAgent> runningAgents;
 	
 	public AgentLoader()
 	{
-		//this.runningAgents = runningAgents;
 	}
-
 	
 	public Agent startAgent(AgentType type, String name)
 	{
