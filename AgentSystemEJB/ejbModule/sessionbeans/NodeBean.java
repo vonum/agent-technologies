@@ -11,6 +11,7 @@ import javax.ejb.EJB;
 import javax.ejb.LocalBean;
 import javax.ejb.Lock;
 import javax.ejb.LockType;
+import javax.ejb.Schedule;
 import javax.ejb.Singleton;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -26,6 +27,7 @@ import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
 import org.jboss.resteasy.client.jaxrs.ResteasyWebTarget;
 
 import interfaces.AgentManagerRemote;
+import interfaces.MessageLoggerRemote;
 import interfaces.NodeRemote;
 import model.AgentCenter;
 import model.AgentType;
@@ -52,6 +54,9 @@ public class NodeBean implements NodeRemote{
 	
 	@EJB
 	AgentManagerRemote agentManager;
+	
+	@EJB
+	MessageLoggerRemote logger;
     /**
      * Default constructor. 
      */
@@ -191,15 +196,8 @@ public class NodeBean implements NodeRemote{
 		// TODO Auto-generated method stub
 		if(curNode.getAlias().equals("master"))
 		{
-			//izbaci cvor
-			centers.remove(alias);
-			//javi ostalima da izbace cvor
-			for(AgentCenter center : centers.values())
-			{
-		        ResteasyClient client = new ResteasyClientBuilder().build();
-		        ResteasyWebTarget target = client.target("http://" + center.getAddress() + ":8080/AgentSystemClient/rest/node/unregister");
-		        target.request().post(Entity.entity(alias, MediaType.TEXT_PLAIN));
-			}
+			//izbaci cvor i javi ostalima da izbace cvor
+			ripNode(alias);
 		}
 		else
 		{
@@ -269,5 +267,76 @@ public class NodeBean implements NodeRemote{
 		{
 			return master;
 		}
+	}
+
+	@Schedule(hour = "*", minute = "*", second = "*/20", info = "every tenth second")
+	@Override
+	public void callNigga() {
+		// TODO Auto-generated method stub
+		logger.logMessage("pls");
+		
+		//svakih n sekundi se salje zahtev svim cvorovima da vide da li je negro ziv
+		if(curNode.getAlias().equals("master"))
+		{
+	        ResteasyClient client = new ResteasyClientBuilder().build();
+	        ResteasyWebTarget target;
+	        
+	        for(AgentCenter center : centers.values())
+	        {
+	        	try
+	        	{
+			        target = client.target("http://" + center.getAddress() + ":8080/AgentSystemClient/rest/node/roar");
+			        Response response = target.request(MediaType.TEXT_PLAIN).get();
+			        if(!response.readEntity(String.class).equals("roar"))
+			        {
+			        	ripNode(center.getAlias());
+			        }
+	        	} catch(Exception e)
+	        	{
+	        		ripNode(center.getAlias());
+	        	}
+	        }
+		}
+	}
+
+	@GET
+	@Path("/roar")
+	@Override
+	public String hearthBear() {
+		// TODO Auto-generated method stub
+		return "roar";
+	}
+	
+	private void ripNode(String alias)
+	{
+		//izbaci cvor
+		centers.remove(alias);
+		
+		for(AgentCenter center : centers.values())
+		{
+	        ResteasyClient client = new ResteasyClientBuilder().build();
+	        ResteasyWebTarget target = client.target("http://" + center.getAddress() + ":8080/AgentSystemClient/rest/node/unregister");
+	        target.request().post(Entity.entity(alias, MediaType.TEXT_PLAIN));
+		}
+	}
+
+	@GET
+	@Path("/test")
+	@Override
+	public void test() {
+		// TODO Auto-generated method stub
+		System.out.println("testiramo");
+		try
+		{
+        ResteasyClient client = new ResteasyClientBuilder().build();
+        ResteasyWebTarget target = client.target("http://localhost:8080/tuki");
+        Response response = target.request(MediaType.TEXT_PLAIN).get();
+        System.out.println(response.readEntity(String.class));
+		}
+		catch(Exception e)
+		{
+			System.out.println(e.getMessage());
+		}
+		
 	}
 }

@@ -27,4 +27,9 @@ public interface NodeRemote {
 	
 	public AgentCenter isMaster();
 	
+	public void callNigga();
+	
+	public String hearthBear();
+	
+	public void test();
 }
