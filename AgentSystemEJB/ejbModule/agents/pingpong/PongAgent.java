@@ -1,4 +1,4 @@
-package agents;
+package agents.pingpong;
 
 import java.util.HashMap;
 import java.util.Map;

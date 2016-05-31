@@ -1,4 +1,4 @@
-package agents;
+package agents.mapreduce;
 
 import java.io.File;
 
@@ -6,6 +6,7 @@ import javax.ejb.EJB;
 import javax.ejb.Remote;
 import javax.ejb.Stateful;
 
+import agents.AgentLoader;
 import interfaces.Agent;
 import interfaces.MessageManagerRemote;
 import interfaces.NodeRemote;
