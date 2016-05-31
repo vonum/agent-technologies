@@ -273,7 +273,7 @@ public class NodeBean implements NodeRemote{
 	@Override
 	public void callNigga() {
 		// TODO Auto-generated method stub
-		logger.logMessage("pls");
+		//logger.logMessage("pls");
 		
 		//svakih n sekundi se salje zahtev svim cvorovima da vide da li je negro ziv
 		if(curNode.getAlias().equals("master"))
@@ -319,24 +319,5 @@ public class NodeBean implements NodeRemote{
 	        target.request().post(Entity.entity(alias, MediaType.TEXT_PLAIN));
 		}
 	}
-
-	@GET
-	@Path("/test")
-	@Override
-	public void test() {
-		// TODO Auto-generated method stub
-		System.out.println("testiramo");
-		try
-		{
-        ResteasyClient client = new ResteasyClientBuilder().build();
-        ResteasyWebTarget target = client.target("http://localhost:8080/tuki");
-        Response response = target.request(MediaType.TEXT_PLAIN).get();
-        System.out.println(response.readEntity(String.class));
-		}
-		catch(Exception e)
-		{
-			System.out.println(e.getMessage());
-		}
-		
-	}
+	
 }

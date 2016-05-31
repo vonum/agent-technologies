@@ -30,6 +30,5 @@ public interface NodeRemote {
 	public void callNigga();
 	
 	public String hearthBear();
-	
-	public void test();
+
 }
