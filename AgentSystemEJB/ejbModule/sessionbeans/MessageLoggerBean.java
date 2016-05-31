@@ -3,22 +3,33 @@ package sessionbeans;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.ejb.EJB;
 import javax.ejb.Remote;
 import javax.ejb.Singleton;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.MediaType;
 
+import org.jboss.resteasy.client.jaxrs.ResteasyClient;
+import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
+import org.jboss.resteasy.client.jaxrs.ResteasyWebTarget;
+
 import interfaces.MessageLoggerRemote;
+import interfaces.NodeRemote;
+import model.AgentCenter;
 
 @Singleton
 @Remote
 @Path("/logger")
 public class MessageLoggerBean implements MessageLoggerRemote
 {
-
+	
+	@EJB
+	NodeRemote node;
+	
 	private List<String> msgList;
 	
     public MessageLoggerBean() 
@@ -26,12 +37,21 @@ public class MessageLoggerBean implements MessageLoggerRemote
 		msgList =  new ArrayList<String>();
 	}
 	
-	
     @Override
     public void logMessage(String msg)
     {
     	msgList.add(msg);
-    	System.out.println("Added to msg list");
+    	
+    	sendMessageToNodes(msg);
+    }
+    
+    
+    @GET
+    @Path("/addmsg/{msg}")
+    @Override
+    public void addExternalMessage(@PathParam("msg") String msg)
+    {
+    	msgList.add(msg);
     }
     
 	@GET
@@ -76,6 +96,22 @@ public class MessageLoggerBean implements MessageLoggerRemote
 		}
 		
 		return newMessages;
+	}
+	
+	/**
+	 *  Sends our local msg to all the other nodes
+	 */
+	private void sendMessageToNodes(String msg)
+	{
+		ResteasyClient client = new ResteasyClientBuilder().build();
+        ResteasyWebTarget target;
+		
+		for(AgentCenter center : node.getCenters().values())
+    	{
+			target = client.target("http://" + center.getAddress() + 
+					               ":8080/AgentSystemClient/rest/logger/a/addmsg/" + msg);
+			target.request(MediaType.APPLICATION_JSON).get();
+    	}
 	}
 	
 }
