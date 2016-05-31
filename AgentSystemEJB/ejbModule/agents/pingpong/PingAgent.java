@@ -1,4 +1,4 @@
-package agents;
+package agents.pingpong;
 
 import javax.ejb.EJB;
 import javax.ejb.Remote;
