@@ -157,13 +157,15 @@ public class AgentManagerBean implements AgentManagerRemote
 		agent.setAids(aids);
 		
 		//dodamo agenta u listu pokrenutih
-		runningAgents.put(agent.getAids().getName(), agent);
-		allAgents.put(agent.getAids().getName(), agent.getAids());
-    	
+		if(!allAgents.containsKey(agent.getAids().getName()))
+		{
+	      	logger.logMessage("Added new " + agentType + " - " + rapper.getName());
+			runningAgents.put(agent.getAids().getName(), agent);
+			allAgents.put(agent.getAids().getName(), agent.getAids());
+		}
+
         ResteasyClient client = new ResteasyClientBuilder().build();
         ResteasyWebTarget target;
-        
-      	logger.logMessage("Added new " + agentType + " - " + rapper.getName());
 		
 		//javimo masteru da doda pokrenutog agenta, ako nije master
 		if(!node.getCurNode().getAlias().equals("master"))

@@ -8,6 +8,7 @@ import javax.ejb.Stateful;
 
 import agents.AgentLoader;
 import interfaces.Agent;
+import interfaces.MessageLoggerRemote;
 import interfaces.MessageManagerRemote;
 import interfaces.NodeRemote;
 import model.ACLMessage;
@@ -27,6 +28,9 @@ public class ReduceAgent extends SirAgent{
 	
 	@EJB
 	MessageManagerRemote messageManager;
+	
+	@EJB
+	MessageLoggerRemote logger;
 	
 	public static int nameGenerator = 0;
 	
@@ -52,10 +56,11 @@ public class ReduceAgent extends SirAgent{
     @Override
     public void handleMessage(ACLMessage msg)
     {
-    	AgentLoader loader = new AgentLoader();
+    	logger.logMessage("Reduce agent " + msg.getSender().getName() + " activated");
+    	logger.logMessage("Activated on : " + center.getCurNode().getAddress());
+    	logger.logMessage("Folder URL : " + msg.getContent());	
     	
-    	System.out.println(msg.getContent());
-    	System.out.println("WE GOT HIT");
+    	AgentLoader loader = new AgentLoader();
     	
     	File folder = new File(msg.getContent());
     	File[] listOfFiles = folder.listFiles();
@@ -79,6 +84,7 @@ public class ReduceAgent extends SirAgent{
     			
     	    } else if (listOfFiles[i].isDirectory()) {
     	    	System.out.println("Directory " + listOfFiles[i].getName());
+    	    	logger.logMessage("Directory " + listOfFiles[i].getName());
     	    }
     	}
     }

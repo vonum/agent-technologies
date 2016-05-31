@@ -54,14 +54,16 @@
   </div>
   
   <footer class="navbar-fixed-bottom">
-  	<div class="class="well">
-	  <ul>
-	  	<li ng-repeat="msg in logMessages track by $index">
-	   		{{ msg }} 
-	  	</li>
-	  	
-	  </ul>
-	</div>
+  	  <div class="panel panel-default">
+  		<div class="panel-heading panel-heading-custom">Console</div>
+  		  <div class="panel-body fixed-panel">
+  		    <ul>
+	  		  <li ng-repeat="msg in logMessages track by $index">
+	   			{{ msg }} 
+	  		  </li>	
+	  	    </ul>
+  		  </div>
+		</div>
   </footer>
   	
 </div>
