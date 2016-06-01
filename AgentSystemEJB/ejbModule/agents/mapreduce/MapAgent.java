@@ -17,6 +17,8 @@ import interfaces.MessageManagerRemote;
 import interfaces.NodeRemote;
 import model.ACLMessage;
 import model.AIDS;
+import model.Pair;
+import model.Performative;
 import model.SirAgent;
 
 /**
@@ -78,7 +80,7 @@ public class MapAgent extends SirAgent {
 	    	   }
 	    	   else
 	    	   {
-	    		   occur.put(c, 0);
+	    		   occur.put(c, 1);
 	    	   }
 	    	}
 	    	fileInput.close();
@@ -89,11 +91,35 @@ public class MapAgent extends SirAgent {
 			// TODO Auto-generated catch block
 			System.out.println("Error reading file");
 		}
-
+		
+		Character winner = '*';
+		Integer max = new Integer(0);
+		
 		for(Entry<Character, Integer> e : occur.entrySet())
 		{
-			logger.logMessage(msg.getContent() + " : " + e.getKey() + " : " + e.getValue());
+			if(e.getValue() >= max)
+			{
+				winner = e.getKey();
+			}
 		}
+		
+		ACLMessage reply = new ACLMessage();
+		Map<String, Object> userArgs = new HashMap<String, Object>();
+		
+		userArgs.put("Occurences", new Pair(winner, occur.get(winner)));
+		userArgs.put("URL", msg.getContent());
+		userArgs.put("Agent", aids);
+		
+		reply.setPerformative(Performative.INFORM);
+		reply.setUserArgs(userArgs);
+		reply.setSender(msg.getReceivers()[0]);
+		
+		messageManager.post(reply);
+
+		/*for(Entry<Character, Integer> e : occur.entrySet())
+		{
+			logger.logMessage(msg.getContent() + " : " + e.getKey() + " : " + e.getValue());
+		}*/
     }
 
 }
