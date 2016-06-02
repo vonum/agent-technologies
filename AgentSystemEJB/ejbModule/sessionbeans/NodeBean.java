@@ -200,14 +200,14 @@ public class NodeBean implements NodeRemote{
 		{
 			//izbaci cvor i javi ostalima da izbace cvor
 			ripNode(alias);
-			removeRunningAgents(alias);
 		}
 		else
 		{
 			//izbaci cvor
 			centers.remove(alias);
-			removeRunningAgents(alias);
 		}
+		
+		removeRunningAgents(alias);
 		
 		return "true";
 
@@ -224,6 +224,7 @@ public class NodeBean implements NodeRemote{
         Response response = target.request().post(Entity.entity(curNode.getAlias(), MediaType.TEXT_PLAIN));
 		
         registered = false;
+        agentManager.resetAgents();
         
 		return response.readEntity(String.class);
 	}
@@ -296,12 +297,12 @@ public class NodeBean implements NodeRemote{
 			        if(!response.readEntity(String.class).equals("roar"))
 			        {
 			        	ripNode(center.getAlias());
-			        	//removeRunningAgents(center.getAlias());
+			        	removeRunningAgents(center.getAlias());
 			        }
 	        	} catch(Exception e)
 	        	{
 	        		ripNode(center.getAlias());
-	        		//removeRunningAgents(center.getAlias());
+	        		removeRunningAgents(center.getAlias());
 	        	}
 	        }
 		}
@@ -330,17 +331,7 @@ public class NodeBean implements NodeRemote{
 	
 	private void removeRunningAgents(String alias)
 	{
-		Map<String, AIDS> tmp = agentManager.getAllAgents();
-		
-		for(Entry<String, AIDS> aids : tmp.entrySet())
-		{
-			if(aids.getValue().getHost().getAlias().equals(alias))
-			{
-				tmp.remove(aids.getKey());
-			}
-		}
-		
-		agentManager.setAllAgents(tmp);
+		agentManager.removeAgents(alias);
 	}
 	
 }

@@ -53,4 +53,8 @@ public interface AgentManagerRemote
 	
 	public void setAllAgents(Map<String, AIDS> allAgents);
 	
+	public void removeAgents(String alias);
+	
+	public void resetAgents();
+	
 }

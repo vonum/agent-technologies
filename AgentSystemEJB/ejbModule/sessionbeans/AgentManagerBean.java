@@ -2,8 +2,10 @@ package sessionbeans;
 
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -298,6 +300,28 @@ public class AgentManagerBean implements AgentManagerRemote
 	public void setAllAgents(Map<String, AIDS> allAgents)
 	{
 		this.allAgents = allAgents;
+	}
+
+	@Override
+	public void removeAgents(String alias) {
+		// TODO Auto-generated method stub
+		Iterator<Entry<String, AIDS>> it = allAgents.entrySet().iterator();
+
+		while (it.hasNext())
+		{
+			Map.Entry<String, AIDS> entry = it.next();
+			if (entry.getValue().getHost().getAlias().equals(alias))
+			{
+				it.remove();
+			}
+		 }
+	}
+
+	@Override
+	public void resetAgents() {
+		// TODO Auto-generated method stub
+		allAgents = new HashMap<String, AIDS>();
+		runningAgents = new HashMap<String, Agent>();
 	}
     
 }
