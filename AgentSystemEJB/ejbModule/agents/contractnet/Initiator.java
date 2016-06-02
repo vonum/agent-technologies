@@ -45,11 +45,14 @@ public class Initiator extends SirAgent
 	
 	private int numOfProposals;
 	
+	private boolean sent;
+	
 	public Initiator()
 	{
 		pendingProposals = new ArrayList<Proposal>();
 		numOfParticipants = 0;
 		numOfProposals = 0;
+		sent = false;
 	}
 			
 	public void callForProposal()
@@ -94,29 +97,47 @@ public class Initiator extends SirAgent
 		logger.logMessage("ODJE: " + numOfProposals);
 		
 		//ako je broj vracenih proposala jednak ukupnom broju poslatih znaci da su se svi javili
-//		if(numOfProposals == numOfParticipants)
-//		{
-//			Proposal bestProposal = getBestProposal();
-//			
-//			logger.logMessage("Agent " + bestProposal.getParticipant().getName() + " had the best proposal  "
-//							+ bestProposal.getTimeEstimate());
-//			
-//			//posaljemo poruku nazad Participant sa najboljom ponudom
-//			ACLMessage msgToParticipant = new ACLMessage();
-//			msgToParticipant.setPerformative(Performative.ACCEPT_PROPOSAL);
-//			msgToParticipant.setReceivers(new AIDS[] { aids } );
-//			msgToParticipant.setSender(bestProposal.getParticipant());
-//			
-//			
-//			
-//			messageManager.post(msgToParticipant);
-//			
-//		}
+		if(numOfProposals == numOfParticipants)
+		{
+			
+			sent = true;
+			
+			Proposal bestProposal = getBestProposal();
+			
+			logger.logMessage("Agent " + bestProposal.getParticipant().getName() + " had the best proposal  "
+							+ bestProposal.getTimeEstimate());
+			
+			//posaljemo poruku nazad Participant sa najboljom ponudom
+			ACLMessage msgToParticipant = new ACLMessage();
+			msgToParticipant.setPerformative(Performative.ACCEPT_PROPOSAL);
+			msgToParticipant.setReceivers(new AIDS[] { aids } );
+			msgToParticipant.setSender(bestProposal.getParticipant());
+			
+			messageManager.post(msgToParticipant);
+			
+		}
 	}
 	
 	public void finishWait()
 	{
-		System.out.println("Zavrsio tajmer");
+		if(sent == false)
+		{
+			System.out.println("Dosta smo cekali izvrsi poziv");
+			
+			Proposal bestProposal = getBestProposal();
+			
+			logger.logMessage("Agent " + bestProposal.getParticipant().getName() + " had the best proposal  "
+							+ bestProposal.getTimeEstimate());
+			
+			//posaljemo poruku nazad Participant sa najboljom ponudom
+			ACLMessage msgToParticipant = new ACLMessage();
+			msgToParticipant.setPerformative(Performative.ACCEPT_PROPOSAL);
+			msgToParticipant.setReceivers(new AIDS[] { aids } );
+			msgToParticipant.setSender(bestProposal.getParticipant());
+			
+			messageManager.post(msgToParticipant);
+		}
+		
 	}
 	
 	private void taskDone(ACLMessage msg)
@@ -222,5 +243,6 @@ public class Initiator extends SirAgent
 		pendingProposals.clear();;
 		numOfParticipants = 0;
 		numOfProposals = 0;
+		sent = false;
 	}
 }
