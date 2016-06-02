@@ -1,9 +1,9 @@
 (function() {
 	angular.module("agentApp").controller("agentModalController", agentModalController);
 		
-	agentModalController.$inject = ['$uibModalInstance', '$scope', '$http', 'getAgentType', 'getDataStream'];
+	agentModalController.$inject = ['$uibModalInstance', '$scope', '$http', 'getAgentType'];
 	
-	function agentModalController($uibModalInstance, $scope, $http, getAgentType, getDataStream) {
+	function agentModalController($uibModalInstance, $scope, $http, getAgentType) {
 		
 		$scope.name = "";
 		
