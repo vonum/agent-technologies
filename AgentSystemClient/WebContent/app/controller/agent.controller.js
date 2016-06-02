@@ -1,10 +1,30 @@
 (function() {
 	angular.module("agentApp").controller("agentController", agentController);
 		
-	agentController.$inject = ["$http", "$scope", "$uibModal", "$interval"];
+	agentController.$inject = ["$http", "$scope", "$uibModal", "$interval", "$routeParams", "$websocket"];
 	
-	function agentController($http, $scope, $uibModal, $interval) {
+	function agentController($http, $scope, $uibModal, $interval, $routeParams, $websocket) {
 
+		var ourIp = "192.168.1.15";
+		
+		console.log($routeParams.type);
+		
+		function isWebsocket(){
+			return $routeParams.type === "websocket";
+		}
+		
+		var dataStream = null;
+		
+		if(isWebsocket) {
+			dataStream = $websocket('ws://' + ourIp +':8080/ChatAppClient/websocket');
+			
+			dataStream.onMessage(function(message) {
+				console.log(message);
+			});
+		}
+		
+		
+		
 		
 		$scope.startAgent = function(type, module) {
 			
@@ -15,6 +35,9 @@
 		        	  getAgentType : function() {
 		        		  return {"type" : type, "module" : module};
 		        	  },
+		        	  getDataStream : function() {
+		        		  return {"dataStream" : dataStream};
+		        	  }
 		        	  
 		          }
 		   });

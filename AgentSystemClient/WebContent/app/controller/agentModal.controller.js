@@ -1,9 +1,9 @@
 (function() {
 	angular.module("agentApp").controller("agentModalController", agentModalController);
 		
-	agentModalController.$inject = ['$uibModalInstance', '$scope', '$http', 'getAgentType'];
+	agentModalController.$inject = ['$uibModalInstance', '$scope', '$http', 'getAgentType', 'getDataStream'];
 	
-	function agentModalController($uibModalInstance, $scope, $http, getAgentType) {
+	function agentModalController($uibModalInstance, $scope, $http, getAgentType, getDataStream) {
 		
 		$scope.name = "";
 		
@@ -17,13 +17,19 @@
 			var agentData = {"type" : {"name" : getAgentType.type, "module" : getAgentType.module},
 					"name" : $scope.name};
 			
-			$http.put('rest/agents/running', agentData)
-			.success(function() {
-				$uibModalInstance.dismiss('cancel'); //close the dialog
-			})
-			.error(function() {
-				console.log("Error adding agent");
-			});
+			if(getDataStream.dataStream != null) {
+				var socketMsg = "startAgent:" + JSON.stringify(agentData);
+				getDataStream.dataStream.send(socketMsg);
+			} else {
+				$http.put('rest/agents/running', agentData)
+				.success(function() {
+					$uibModalInstance.dismiss('cancel'); //close the dialog
+				})
+				.error(function() {
+					console.log("Error adding agent");
+				});
+			}
+				
 		}
 	}
 	
