@@ -1,11 +1,16 @@
 package agents.contractnet;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import javax.annotation.Resource;
 import javax.ejb.EJB;
 import javax.ejb.Remote;
 import javax.ejb.Stateful;
+import javax.ejb.Timeout;
+import javax.ejb.Timer;
+import javax.ejb.TimerService;
 
 import interfaces.Agent;
 import interfaces.AgentManagerRemote;
@@ -30,6 +35,9 @@ public class Initiator extends SirAgent
 	@EJB
 	MessageLoggerRemote logger;
 	
+	@EJB
+	TimerLocal timer;
+	
 	private ArrayList<Proposal> pendingProposals;
 	
 	private int numOfParticipants;
@@ -45,6 +53,8 @@ public class Initiator extends SirAgent
 			
 	public void callForProposal()
 	{
+		timer.startTimer(5000, (Serializable)this);
+		
 		AIDS[] runningAgents = arrayOfAgents();
 		
 		Proposal proposal = new Proposal();
@@ -87,6 +97,11 @@ public class Initiator extends SirAgent
 			messageManager.post(msgToParticipant);
 			
 		}
+	}
+	
+	public void finishWait()
+	{
+		System.out.println("Zavrsio tajmer");
 	}
 	
 	private void taskDone(ACLMessage msg)
