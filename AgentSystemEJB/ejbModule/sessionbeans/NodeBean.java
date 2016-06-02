@@ -326,13 +326,17 @@ public class NodeBean implements NodeRemote{
 	
 	private void removeRunningAgents(String alias)
 	{
-		for(Entry<String, AIDS> aids : agentManager.getAllAgents().entrySet())
+		Map<String, AIDS> tmp = agentManager.getAllAgents();
+		
+		for(Entry<String, AIDS> aids : tmp.entrySet())
 		{
 			if(aids.getValue().getHost().getAlias().equals(alias))
 			{
-				agentManager.getAllAgents().remove(aids.getKey());
+				tmp.remove(aids.getKey());
 			}
 		}
+		
+		agentManager.setAllAgents(tmp);
 	}
 	
 }

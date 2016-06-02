@@ -51,4 +51,6 @@ public interface AgentManagerRemote
 	
 	public Map<String, AIDS> getAllAgents();
 	
+	public void setAllAgents(Map<String, AIDS> allAgents);
+	
 }

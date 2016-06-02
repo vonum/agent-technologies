@@ -293,5 +293,11 @@ public class AgentManagerBean implements AgentManagerRemote
 		// TODO Auto-generated method stub
 		return this.allAgents;
 	}
+	
+	@Override
+	public void setAllAgents(Map<String, AIDS> allAgents)
+	{
+		this.allAgents = allAgents;
+	}
     
 }
