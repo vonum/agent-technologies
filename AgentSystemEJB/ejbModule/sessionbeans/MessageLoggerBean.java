@@ -109,7 +109,7 @@ public class MessageLoggerBean implements MessageLoggerRemote
 		for(AgentCenter center : node.getCenters().values())
     	{
 			target = client.target("http://" + center.getAddress() + 
-					               ":8080/AgentSystemClient/rest/logger/a/addmsg/" + msg);
+					               ":8080/AgentSystemClient/rest/logger/addmsg/" + msg);
 			target.request(MediaType.APPLICATION_JSON).get();
     	}
 	}

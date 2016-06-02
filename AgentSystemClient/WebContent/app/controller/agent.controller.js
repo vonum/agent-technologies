@@ -100,17 +100,22 @@
 		runningAgents();
 		
 		
+		$scope.clear = function(){
+			//$scope.count = $scope.logMessages.length;
+			$scope.logMessages = [];
+		}
 		
 		//Update console output
 		
 		$scope.logMessages = [];
+		$scope.count = 0;
 		
 		$scope.updateConsole = function() {
 			
-			var count = $scope.logMessages.length;
-			
-			$http.get('rest/logger/messages/' + count)
+			$http.get('rest/logger/messages/' + $scope.count)
 			.success(function(d) {
+				
+				$scope.count += d.length;
 				
 				//for each new msg push
 				angular.forEach(d, function(v, k) {

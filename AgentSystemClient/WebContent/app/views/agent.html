@@ -1,5 +1,5 @@
 
-<div class="container">
+<div class="container scrollable">
 
 	<button class="btn btn-success" ng-click="sendAclMessage()" >Acl message</button>
 
@@ -52,10 +52,14 @@
 	    </tbody>
 	  </table>
   </div>
+  </div>
   
-  <footer class="navbar-fixed-bottom">
+  <footer class="navbar-bottom">
   	  <div class="panel panel-default">
-  		<div class="panel-heading panel-heading-custom">Console</div>
+  		<div class="panel-heading panel-heading-custom">
+  			<button class="btn btn-danger" ng-click="clear()">Clear Console</button>
+  		</div>
+  		
   		  <div class="panel-body fixed-panel">
   		    <ul>
 	  		  <li ng-repeat="msg in logMessages track by $index">
@@ -65,5 +69,4 @@
   		  </div>
 		</div>
   </footer>
-  	
-</div>
+  
