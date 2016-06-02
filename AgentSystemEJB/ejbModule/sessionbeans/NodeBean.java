@@ -64,8 +64,8 @@ public class NodeBean implements NodeRemote{
      */
     public NodeBean() {
         // TODO Auto-generated constructor stub
-    	master = new AgentCenter("192.168.0.15", "master");
-    	curNode = new AgentCenter("192.168.0.14", "milan");
+    	master = new AgentCenter("192.168.0.14", "master");
+    	curNode = master;
     	centers = new HashMap<String, AgentCenter>();
     	registered = false;
     }
@@ -200,14 +200,14 @@ public class NodeBean implements NodeRemote{
 		{
 			//izbaci cvor i javi ostalima da izbace cvor
 			ripNode(alias);
+			removeRunningAgents(alias);
 		}
 		else
 		{
 			//izbaci cvor
 			centers.remove(alias);
+			removeRunningAgents(alias);
 		}
-		
-		removeRunningAgents(alias);
 		
 		return "true";
 
@@ -223,6 +223,8 @@ public class NodeBean implements NodeRemote{
         ResteasyWebTarget target = client.target("http://" + master.getAddress() + ":8080/AgentSystemClient/rest/node/unregister");
         Response response = target.request().post(Entity.entity(curNode.getAlias(), MediaType.TEXT_PLAIN));
 		
+        registered = false;
+        
 		return response.readEntity(String.class);
 	}
 	
@@ -294,12 +296,12 @@ public class NodeBean implements NodeRemote{
 			        if(!response.readEntity(String.class).equals("roar"))
 			        {
 			        	ripNode(center.getAlias());
-			        	removeRunningAgents(center.getAlias());
+			        	//removeRunningAgents(center.getAlias());
 			        }
 	        	} catch(Exception e)
 	        	{
 	        		ripNode(center.getAlias());
-	        		removeRunningAgents(center.getAlias());
+	        		//removeRunningAgents(center.getAlias());
 	        	}
 	        }
 		}
