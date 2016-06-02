@@ -294,10 +294,12 @@ public class NodeBean implements NodeRemote{
 			        if(!response.readEntity(String.class).equals("roar"))
 			        {
 			        	ripNode(center.getAlias());
+			        	removeRunningAgents(center.getAlias());
 			        }
 	        	} catch(Exception e)
 	        	{
 	        		ripNode(center.getAlias());
+	        		removeRunningAgents(center.getAlias());
 	        	}
 	        }
 		}
