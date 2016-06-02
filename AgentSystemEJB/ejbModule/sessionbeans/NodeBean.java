@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -29,6 +30,7 @@ import org.jboss.resteasy.client.jaxrs.ResteasyWebTarget;
 import interfaces.AgentManagerRemote;
 import interfaces.MessageLoggerRemote;
 import interfaces.NodeRemote;
+import model.AIDS;
 import model.AgentCenter;
 import model.AgentType;
 
@@ -205,6 +207,8 @@ public class NodeBean implements NodeRemote{
 			centers.remove(alias);
 		}
 		
+		removeRunningAgents(alias);
+		
 		return "true";
 
 	}
@@ -317,6 +321,17 @@ public class NodeBean implements NodeRemote{
 	        ResteasyClient client = new ResteasyClientBuilder().build();
 	        ResteasyWebTarget target = client.target("http://" + center.getAddress() + ":8080/AgentSystemClient/rest/node/unregister");
 	        target.request().post(Entity.entity(alias, MediaType.TEXT_PLAIN));
+		}
+	}
+	
+	private void removeRunningAgents(String alias)
+	{
+		for(Entry<String, AIDS> aids : agentManager.getAllAgents().entrySet())
+		{
+			if(aids.getValue().getHost().getAlias().equals(alias))
+			{
+				agentManager.getAllAgents().remove(aids.getKey());
+			}
 		}
 	}
 	

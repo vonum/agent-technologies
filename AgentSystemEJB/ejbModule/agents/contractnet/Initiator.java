@@ -3,14 +3,15 @@ package agents.contractnet;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
-import javax.annotation.Resource;
 import javax.ejb.EJB;
 import javax.ejb.Remote;
 import javax.ejb.Stateful;
-import javax.ejb.Timeout;
-import javax.ejb.Timer;
-import javax.ejb.TimerService;
+
+import com.sun.media.jfxmedia.logging.Logger;
 
 import interfaces.Agent;
 import interfaces.AgentManagerRemote;
@@ -72,31 +73,45 @@ public class Initiator extends SirAgent
 	{
 		logger.logMessage("Got a proposal back from agent " + msg.getReceivers()[0].getName());
 		
-		Proposal participantProposal = (Proposal) msg.getContentObject();
+		Proposal participantProposal;
+		
+		if(msg.getContentObject() instanceof Proposal)
+		{
+			participantProposal = (Proposal) msg.getContentObject();
+		}
+		else
+		{
+			LinkedHashMap map = (LinkedHashMap) msg.getContentObject();
+			participantProposal = new Proposal();
+			participantProposal.setTimeEstimate((int) map.get("timeEstimate"));
+			//participantProposal.setParticipant((AIDS) map.get("participant"));
+		}
 		
 		pendingProposals.add(participantProposal);
 		
 		numOfProposals++;
 		
+		logger.logMessage("ODJE: " + numOfProposals);
+		
 		//ako je broj vracenih proposala jednak ukupnom broju poslatih znaci da su se svi javili
-		if(numOfProposals == numOfParticipants)
-		{
-			Proposal bestProposal = getBestProposal();
-			
-			logger.logMessage("Agent " + bestProposal.getParticipant().getName() + " had the best proposal  "
-							+ bestProposal.getTimeEstimate());
-			
-			//posaljemo poruku nazad Participant sa najboljom ponudom
-			ACLMessage msgToParticipant = new ACLMessage();
-			msgToParticipant.setPerformative(Performative.ACCEPT_PROPOSAL);
-			msgToParticipant.setReceivers(new AIDS[] { aids } );
-			msgToParticipant.setSender(bestProposal.getParticipant());
-			
-			
-			
-			messageManager.post(msgToParticipant);
-			
-		}
+//		if(numOfProposals == numOfParticipants)
+//		{
+//			Proposal bestProposal = getBestProposal();
+//			
+//			logger.logMessage("Agent " + bestProposal.getParticipant().getName() + " had the best proposal  "
+//							+ bestProposal.getTimeEstimate());
+//			
+//			//posaljemo poruku nazad Participant sa najboljom ponudom
+//			ACLMessage msgToParticipant = new ACLMessage();
+//			msgToParticipant.setPerformative(Performative.ACCEPT_PROPOSAL);
+//			msgToParticipant.setReceivers(new AIDS[] { aids } );
+//			msgToParticipant.setSender(bestProposal.getParticipant());
+//			
+//			
+//			
+//			messageManager.post(msgToParticipant);
+//			
+//		}
 	}
 	
 	public void finishWait()
@@ -140,9 +155,12 @@ public class Initiator extends SirAgent
 	//Returns a array of all running participants agents
 	private AIDS[] arrayOfAgents()
 	{
-		HashMap<String, AIDS> agentsAids = (HashMap<String, AIDS>) agentManager.allAgents();
+		Map<String, AIDS> agentsAids = (HashMap<String, AIDS>) agentManager.allAgents();
 		
-		ArrayList<AIDS> participants =  new ArrayList<AIDS>();
+		List<AIDS> participants =  new ArrayList<AIDS>();
+		
+		System.out.println("BROJ AGENATA");
+		System.out.println(agentsAids.size());
 		
 		//get just the participant agents
 		for(AIDS a : agentsAids.values())
@@ -161,6 +179,8 @@ public class Initiator extends SirAgent
 	
 	private void sendToAllReceivers(AIDS[] receivers, ACLMessage msg)
 	{
+		System.out.println("BROJ RECIVERA");
+		System.out.println(receivers.length);
 		for(AIDS recvAids : receivers)
 		{
 			msg.setReceivers(new AIDS[] { aids } );
