@@ -317,7 +317,7 @@ public class NodeBean implements NodeRemote{
 	{
 		//izbaci cvor
 		centers.remove(alias);
-		
+		logger.logMessage("AgentCenter " + alias + "removed");
 		for(AgentCenter center : centers.values())
 		{
 	        ResteasyClient client = new ResteasyClientBuilder().build();
