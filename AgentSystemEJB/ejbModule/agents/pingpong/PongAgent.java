@@ -56,8 +56,8 @@ public class PongAgent extends SirAgent
 		
 		userArgs.put("Pong activated : ", aids.getName());
 		userArgs.put("Pong activated by : ", msg.getReceivers()[0].getName());
-		userArgs.put("Pong activated on : ", msg.getReceivers()[0].getHost().getAddress());
-		userArgs.put("Pong working on : ", center.getCurNode().getAddress());
+		//userArgs.put("Pong activated on : ", msg.getReceivers()[0].getHost().getAddress());
+		//userArgs.put("Pong working on : ", center.getCurNode().getAddress());
 		userArgs.put("Pong counter : ", ++counter);
 		
 		reply.setPerformative(Performative.INFORM);
