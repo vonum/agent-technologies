@@ -20,6 +20,7 @@
 			if(getDataStream.dataStream != null) {
 				var socketMsg = "startAgent:" + JSON.stringify(agentData);
 				getDataStream.dataStream.send(socketMsg);
+				$uibModalInstance.dismiss('cancel');
 			} else {
 				$http.put('rest/agents/running', agentData)
 				.success(function() {
