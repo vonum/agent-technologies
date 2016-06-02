@@ -105,11 +105,24 @@ public class MessageLoggerBean implements MessageLoggerRemote
 	{
 		ResteasyClient client = new ResteasyClientBuilder().build();
         ResteasyWebTarget target;
-		
+        
+        System.out.println("ODJE size: " + node.getCenters().size());
+        
+        if(!node.getCurNode().getAlias().equals("master"))
+        {
+			target = client.target("http://" + node.getMaster().getAddress() + 
+		               ":8080/AgentSystemClient/rest/logger/addmsg/" + msg);
+			target.request().get();
+        }
+        
 		for(AgentCenter center : node.getCenters().values())
     	{
+			System.out.println("ODJE centar: " + center.getAlias());
+			
 			if(!center.getAlias().equals(node.getCurNode().getAlias()))
 			{
+				System.out.println("ODJE: ");
+				
 				target = client.target("http://" + center.getAddress() + 
 			               ":8080/AgentSystemClient/rest/logger/addmsg/" + msg);
 				target.request().get();
