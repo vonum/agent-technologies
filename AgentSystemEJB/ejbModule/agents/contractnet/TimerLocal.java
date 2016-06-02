@@ -2,10 +2,10 @@ package agents.contractnet;
 
 import java.io.Serializable;
 
-import javax.ejb.Local;
+import javax.ejb.Remote;
 import javax.ejb.Timer;
 
-@Local
+@Remote
 public interface TimerLocal 
 {
 	public void startTimer(int time, Serializable o);
