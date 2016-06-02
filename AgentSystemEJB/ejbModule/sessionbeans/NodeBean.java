@@ -93,6 +93,8 @@ public class NodeBean implements NodeRemote{
         		System.out.println("Adding center");
         		System.out.println("Sending http to other nodes");
         		
+        		logger.logMessage("Adding center " + center.getAlias());
+        		
         		//2. master trazi koje tipove agenata podrzava novi cvor
 		        ResteasyClient client = new ResteasyClientBuilder().build();
 		        ResteasyWebTarget target = client.target("http://" + center.getAddress() + ":8080/AgentSystemClient/rest/agents/classes");
@@ -320,7 +322,7 @@ public class NodeBean implements NodeRemote{
 	{
 		//izbaci cvor
 		centers.remove(alias);
-		logger.logMessage("AgentCenter " + alias + "removed");
+		logger.logMessage("AgentCenter " + alias + " removed");
 		for(AgentCenter center : centers.values())
 		{
 	        ResteasyClient client = new ResteasyClientBuilder().build();
