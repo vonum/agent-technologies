@@ -6,11 +6,11 @@
 	function promoController($scope, $http, $location) {
 		
 		$scope.rest = function() {
-			$location.path('/agent/rest');
+			$location.path('/agent');
 		}
 		
 		$scope.websocket = function() {
-			$location.path('/agent/websocket');
+			$location.path('/agent');
 		}
 	}
 	

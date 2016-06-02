@@ -4,10 +4,10 @@ var agentApp = angular.module("agentApp", ["ui.bootstrap", "ngRoute",
 agentApp.config(function($routeProvider) {
 	$routeProvider
 	.when('/', {
-		templateUrl: "app/views/promo.html",
-		controller: "promoController"
+		templateUrl: "app/views/cluster.html",
+		controller: "clusterController"
 	})
-	.when('/agent/:type', {
+	.when('/agent/', {
 		templateUrl: "app/views/agent.html",
 		controller: "agentController"
 	})
