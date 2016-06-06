@@ -100,6 +100,7 @@ public class MapAgent extends SirAgent {
 			if(e.getValue() >= max)
 			{
 				winner = e.getKey();
+				max = e.getValue();
 			}
 		}
 		
